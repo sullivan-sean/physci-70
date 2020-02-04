@@ -16,7 +16,7 @@ build can be represented in the following diagram:
 
 For power source (5V) and ground (GND), I used the 3V and GND terminals of the
 microcontroller respectively. After fun stripping and cutting wires, I assembled
-the circuit as shown below:
+the circuit as below:
 
 ![Basic LED](/img/week1/basic_LED.jpg)
 
@@ -37,16 +37,27 @@ used initially, with the result here:
 ![Short LED](/img/week1/short_LED.jpg)
 
 On this circuit I used a multimeter to measure voltage differences across the
-resistor and LED.
+resistor and LED. There was a 0.667V reading across the resistor and
+a 2.333V reading across the LED. This means first that the voltage is
+monotonically decreasing throughout the circuit and second that all 3V
+that we started with were "used." The bands across the resistor indicate
+that it is a 1k Ohm resistor:
 
-Lastly, I used the Arduino IDE to get the built in LED on the microcontroller to
+![Resistor codes](/img/resistorcodes.png)
+
+Using Ohm's law, we then know that the current through the resistor is:
+$$I=\frac{V}{R}=\frac{0.667V}{1000 \Omega}=0.667 mA$$
+Current is constant through a series circuit so this is also the current
+through the LED.
+
+Lastly, I used the Arduino IDE to get the built-in LED on the microcontroller to
 blink.
 
 ![Blink](/img/week1/blink.gif)
 
-This did not work off the bat either. I had plugged the microusb adapter from
+This did not work immediately either. I plugged the MicroUSB adapter from
 the microcontroller into a USB port on my computer, but the Arduino IDE was
-unable to access this port unless I ran the progam as a root user. After
+unable to access this port unless I ran the program as a root user. After
 reinstalling the Adafruit board for the root user, I was able to detect the
 board and run the blink example program.
 
