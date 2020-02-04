@@ -33,7 +33,7 @@
       
       <guid>http://seansullivan.ai/physci-70/post/week1/</guid>
       <description>For the first week of class, we experimented with microcontrollers, building our first circuits on breadboards. Loosely following a guide introducing basic electronics, I built a circuit using the Adafruit ItsyBitsy M4 controller. The circuit I set out to build can be represented in the following diagram:
-For power source (5V) and ground (GND), I used the 3V and GND terminals of the microcontroller respectively. After fun stripping and cutting wires, I assembled the circuit as shown below:</description>
+For power source (5V) and ground (GND), I used the 3V and GND terminals of the microcontroller respectively. After fun stripping and cutting wires, I assembled the circuit as below:</description>
     </item>
     
   </channel>
