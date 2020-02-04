@@ -79,3 +79,10 @@ change as I better understand what is feasible and what is not.
   steering capabilities. While full autonomy might not be possible (e.g.
   intersections would be _very_ difficult) steering around objects in a
   classroom could be an interesting challenge.
+
+- __Micro Keyboard__: I've seen collapsible keyboards but they often fold up
+  when not on a flat surface. I'd like to use my phone as my computer (ssh).
+  
+- __Pose Tracking Clothes Inserts__: Similar to bio tracking, I'd like to have
+  inserts for my socks and shirt sleeves to track how my body is moving
+  throughout the day. They'd need to be removable so that I can wash my clothes!
