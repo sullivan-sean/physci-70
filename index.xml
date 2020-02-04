@@ -1,12 +1,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-      <title>PHYSCI 70 on PHYSCI 70 </title>
+      <title>PHYSCI 70: Digital Fabrication on PHYSCI 70: Digital Fabrication </title>
       <generator uri="https://gohugo.io">Hugo</generator>
     <link>http://seansullivan.ai/physci-70/</link>
     <language>en-us</language>
     
     
-    <updated>Mon, 01 Jan 0001 00:00:00 UTC</updated>
+    <updated>Tue, 04 Feb 2020 00:35:54 EST</updated>
+    
+    <item>
+      <title>Contact</title>
+      <link>http://seansullivan.ai/physci-70/contact/</link>
+      <pubDate>Tue, 04 Feb 2020 00:35:54 EST</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/contact/</guid>
+      <description>   </description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://seansullivan.ai/physci-70/about/</link>
+      <pubDate>Tue, 04 Feb 2020 00:03:29 EST</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/about/</guid>
+      <description>Hi! I&#39;m Sean, currently a junior at Harvard pursuing a joint B.A. in Neuroscience and M.S. in Applied Mathematics. I like building things with other people. I&#39;ve taken two semesters off from school, the first to co-found Summer Playbook and the second to live in a van while building autonomous robots at Nuro. I love talking about brain computer interfaces and the importance of sleep. This semester I&#39;m reaching far out of my comfort zone to dance with Expressions</description>
+    </item>
+    
+    <item>
+      <title>Week 1</title>
+      <link>http://seansullivan.ai/physci-70/post/week1/</link>
+      <pubDate>Mon, 03 Feb 2020 22:39:31 EST</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week1/</guid>
+      <description>For the first week of class, we experimented with microcontrollers, building our first circuits on breadboards. Loosely following a guide introducing basic electronics, I built a circuit using the Adafruit ItsyBitsy M4 controller. The circuit I set out to build can be represented in the following diagram:
+For power source (5V) and ground (GND), I used the 3V and GND terminals of the microcontroller respectively. After fun stripping and cutting wires, I assembled the circuit as shown below:</description>
+    </item>
     
   </channel>
 </rss>
