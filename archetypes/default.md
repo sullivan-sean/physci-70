@@ -4,3 +4,10 @@ date: {{ .Date }}
 draft: true
 ---
 
++++
+title = ""
+description = ""
+tags = []
+draft = true
+image = ""
++++
