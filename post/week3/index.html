@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 3 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week3/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://seansullivan.ai/physci-70" class="site-title">PHYSCI 70: Digital Fabrication</a>
+      <nav class="site-nav right">
+      <a href="http://seansullivan.ai/physci-70/about/">About</a>
+<a href="http://seansullivan.ai/physci-70/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Week 3</h1>
+        <span class="post-meta">Feb 17, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <p>This week I built a drawing machine. I was initially inspired by
+<a href="https://www.youtube.com/watch?v=Ge4wDrz-FhE">spirographs</a> that I used to
+have as a kid and wanted to make an automated, mechanical form of these.
+After exploring Pinterest spirographs to see if there were particularly
+interesting patterns I could create, I found
+<a href="http://leafpdx.bigcartel.com/product/cycloid-drawing-machine">this</a>
+drawing machine that costs $675!! The pattern combinations were very
+complex and customizable so I set out to make something similar at a much
+lower price point.</p>
+<h3 id="grinding-my-gears">Grinding my Gears</h3>
+<p>I started by trying to get just two gears to move together. Before making
+any gears I needed an axis. In order to fix these axes to some base board
+down the line, I decided to use screws. I used calipers to measure the
+width of several screws and settled on the 10-32 screws.</p>
+<p><img src="../../img/week3/screw_width.png" alt="screw width"></p>
+<p>I chose this screw because the width as measured with the calipers was
+close to the width of cardboard, which would give me flexibility later in
+designing the drawing arm (I could make a slot that would fit snugly to
+both a screw and cardboard). We also had many lengths for this screw type
+in the lab so I had flexibility in axis heights.</p>
+<p>To determine how large I should make my holes to allow the gears to spin,
+I made a bar with several holes in Fusion that varied up to 0.20mm in
+diameter from the measured screw width:</p>
+<p><img src="../../img/week3/hole_size.png" alt="hole size">
+<img src="../../img/week3/hole_size_2.png" alt="hole size second"></p>
+<p>I found that 4.75mm was a reasonable hole size, accounting for kerf, to
+use as a center hole diameter in my gears. To actually make the gears,
+I followed <a href="https://www.youtube.com/watch?v=ZakT54JIhB8">this</a> tutorial
+that lead me to a script built in to fusion.</p>
+<p><img src="../../img/week3/gear_params.png" alt="gear params"></p>
+<p>I had several choices in the parameters. I chose a small pressure angle to
+give the gear less horsepower but also less noise, which I thought would
+result in smoother drawings. The module and number of teeth together
+determine the pitch diameter. In order to find good values for these
+parameters, I had to plan out my design a little further.</p>
+<p>I wanted to be able to mount a full piece of printer paper on the table of
+my machine.  This would have a diameter of $\sqrt{8.5^2+11^2}=13.9
+in\approx 353.06 mm$. In order to have a gear with a hand crank that
+I could interlock with a gear for the table, I needed to have the hand
+crank gear fully clear the table so that the crank wouldn&rsquo;t bump into the
+table. I needed a gear setup with teeth $353.06/2=176.50mm$ from center.
+I could do this with one big gear, but with limited cardboard and wood,
+bigger pieces are harder to cut out. I decided to split this radius into
+two gears. I split this larger radius into a center gear of radius 80mm
+and an outer gear of radius approximately 48mm, somewhat arbitrarily. Note
+that $r_\text{center}+2r_\text{outer}\approx 176.50 mm$ so that the teeth
+of the outer gear will be around the border of the table and the hand
+crank will not hit the table. The diameter of a gear is the module times
+the number of teeth. I wanted gears with diameter 96mm and 160mm so
+I chose module to be 2 to get nice, whole numbers of teeth (48 and 80).
+Module affects the compatibility of gears so I kept module at 2 throughout
+construction of all my gears.</p>
+<p>To get my two gears to work together I made small, 24 tooth gears. With
+module 2, these had a pitch diameter of 48mm. Running the script generated
+a body for me:</p>
+<p><img src="../../img/week3/24_gear_basic.png" alt="24 Tooth Gear"></p>
+<p>The sketches for this body were not fully constrained or parameterized
+(e.g. the hole diameter at the center, which I had set as a parameter to
+4.75, was not linked to the parameter in the resulting body). This was
+mildly annoying and I&rsquo;m interested to learn if there is something about
+writing scripts that prevents this or if it is just more complicated.</p>
+<h3 id="building-a-base">Building a Base</h3>
+<p>With the gears interlocking and spinning on screws, I set out to make
+a cardboard base that held axes at the distances I calculated above.
+I created fixed points for the axis of the center gear and 3 outer gears,
+all of which would lie fully under the table. I also created flexible axis
+locations for 3 other gears that would be turned by the outer gears.
+I used the slot tool to allow these gears to be easily repositioned and to
+allow customization by swapping gear sizes. The final design looked like
+this:</p>
+<p><img src="../../img/week3/base_design.png" alt="base"></p>
+<p>I printed gears with the 80 and 48 teeth and assembled everything:</p>
+<p><img src="../../img/week3/base.gif" alt="base"></p>
+<p>To affix the screw axes to the base I used a washer and nut and then
+placed the gear on top of this. One problem with the approach is that the
+gears were very wobbly. To remedy this, I designed and laser cut a spacer
+with a hole in the middle that was just larger than the hex nut on each
+axis:</p>
+<p><img src="../../img/week3/spacer.png" alt="spacer"></p>
+<p>Putting one below each gear made the configuration much less wobbly,
+though the cardboard gears still sometimes skipped. Once the base setup
+was complete I needed another type of gear. In order to insert a handle
+into a gear, I added a slot in the middle of the gear and then used Fusion&rsquo;s
+push/pull feature on the existing gear body to cut a hole shaped like this
+slot. This slot had a width equal to the axis holes as I planned to use
+the same type of screw. I made the slot as long as possible, which
+interfered with the spacer, so I made a slightly smaller spacer as well
+for these slotted gears.</p>
+<p><img src="../../img/week3/slotted_gear_dimensions.png" alt="slotted gear dims">
+<img src="../../img/week3/slotted_gear.png" alt="slotted gear"></p>
+<p>These gears fit well onto the base. With this in place I needed a way to
+attach the arm that would hold the pen.</p>
+<h3 id="drawing-arm">Drawing Arm</h3>
+<p>To hold the drawing arm on the handles of two gears, I created two types
+of screw caps that would rest on the handles coming from the slotted gears
+above. One cap had a rod sticking out (which I found in our miscellaneous
+hardware bin) while the other used another piece of cardboard.</p>
+<p><img src="../../img/week3/screw_caps.jpg" alt="screw caps"></p>
+<p>I designed a bar that would hinge on the rod and slide the cardboard cap
+through a slot:</p>
+<p><img src="../../img/week3/bar_1.png" alt="bar"></p>
+<p>In the end, however, I removed the screw caps as I found the bar worked
+better just resting on nuts and the screws. For this I designed an
+alternative bar. The slots at the end of this bar allow it to be used for
+both a screw/screw combination or a screw cap/screw cap combination, with
+both caps using cardboard and not the rod above:</p>
+<p><img src="../../img/week3/bar_2.png" alt="bar alt"></p>
+<p>Finally, I made a box to hold the pen with a pen hole large enough for
+a sharpie, pencil, or pen. I added a hole in the side that would allow me
+to tighten a screw to hold the writing utensil in place:</p>
+<p><img src="../../img/week3/pen_box.png" alt="pen box"></p>
+<p>I extended the base of the box to make a second arm and attached the two.</p>
+<h3 id="table">Table</h3>
+<p>The last step was adding a table to the center gear. I added slots to the
+center gear and made a large circle with similar slots. I connected the
+two pieces with two laser cut connectors as shown below:</p>
+<p><img src="../../img/week3/table_connector.png" alt="table_connector">
+<img src="../../img/week3/table.png" alt="table"></p>
+<p>Putting it all together, I found the cardboard gears kept slipping with
+the weight and friction of the full assembly. To fix this, I simply
+printed acrylic gears (we were all out of wood) and came up with the
+following working product:</p>
+<p><img src="../../img/week3/angled_full.jpg" alt="angled shot">
+<img src="../../img/week3/drawing_machine.jpg" alt="final product">
+<img src="../../img/week3/design.jpg" alt="first drawing"></p>
+<p><img src="../../img/week3/out.gif" alt="result"></p>
+<p>The machine draws as hoped, though I would like to cut more diverse gears
+to make more diverse patterns. I might also make a different base shape to
+allow further flexibility. One problem with the current design is that the
+gears are still wobbly sometimes when going fast. Adding a guard over gear
+intersections could help solve this.</p>
+
+      </article>
+
+      
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+
