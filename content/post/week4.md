@@ -2,7 +2,7 @@
 title = "Week 4"
 date = "2020-02-20T15:56:31-05:00"
 draft = false
-image = "img/week4/complete.jpg"
+image = "img/week4/out.gif"
 +++
 
 ### Getting Arduino Setup
@@ -87,6 +87,8 @@ After assembling everything, the circuit still didn't work.
 
 After much troubleshooting, I found that the transistor I used had too
 large a threshold voltage. Switching the transistor made the motor work.
+
+![vid](/img/week4/out.gif)
 
 This is as far as I got. The motor runs but I was unable to attach
 something that would hit the button in the right way. Going forward I hope
