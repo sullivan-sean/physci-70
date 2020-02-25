@@ -6,7 +6,17 @@
     <language>en-us</language>
     
     
-    <updated>Mon, 17 Feb 2020 22:39:31 EST</updated>
+    <updated>Thu, 20 Feb 2020 15:56:31 EST</updated>
+    
+    <item>
+      <title>Week 4</title>
+      <link>http://seansullivan.ai/physci-70/post/week4/</link>
+      <pubDate>Thu, 20 Feb 2020 15:56:31 EST</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week4/</guid>
+      <description>Getting Arduino Setup At first, my Arduino board wouldn&amp;rsquo;t work, even after installing packages with Board Manager for Adafruit SAMD. While code would compile fine in the IDE, whenever I tried to upload to the board I got the error &amp;ldquo;Permission Denied.&amp;rdquo; In order to solve this problem, I investigated the permissions on the port I had plugged the device into. By running
+ls -l /dev/ttyACM0 I found that the group permissions for the port was set to the group uucp.</description>
+    </item>
     
     <item>
       <title>Week 3</title>
