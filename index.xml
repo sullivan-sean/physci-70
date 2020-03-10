@@ -6,7 +6,16 @@
     <language>en-us</language>
     
     
-    <updated>Fri, 28 Feb 2020 15:56:31 EST</updated>
+    <updated>Tue, 04 Feb 2020 00:35:54 EST</updated>
+    
+    <item>
+      <title>Week 6</title>
+      <link>http://seansullivan.ai/physci-70/post/week6/</link>
+      <pubDate>Mon, 09 Mar 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week6/</guid>
+      <description>Electromyography (EMG) This week for sensors I wanted to build an electromyogram (EMG) to sense muscle activation. Inspired by CTRL-labs BCI that does high precision muscle sensing to preemptively determine how your hand will move, I thought an EMG would be a good start in learning how this worked. Muscles are activated through neuronal signaling, which is electrical. By attaching electrodes to two points of a muscle and amplifying the signal, you fill find a differential in electrical potential that changes with muscle contraction.</description>
+    </item>
     
     <item>
       <title>Week 5</title>
