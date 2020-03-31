@@ -1,6 +1,6 @@
 +++
 title = "Week 8"
-date = "2020-03-09T15:56:31-05:00"
+date = "2020-03-30T15:56:31-05:00"
 draft = false
 image = "img/week8/cover.jpg"
 +++
@@ -42,13 +42,48 @@ with to large a potentiometer, which controls the contrast when adjusted.
 hidden post on the Arduino forums ultimately solved my problems. By giving
 a comprehensible breakdown of everything going on in the circuit, I was
 able to make sure each of the hardware components was setup correctly
-before moving on to the code. In the end, I had connected one of the pins
-to the 5V rail instead of GND. After solving this issue, and with a much
-better understanding of each of the pins, I had output hello world to the
-screen:
+before moving on to the code. The pins, from the data sheet, are as follows:
+
+(1) GND
+
+(2) +5V
+
+(3) LCD Contrast V0
+
+(4) Register Select (LOW/HIGH for for instruction vs display)
+
+(5) Read/Write (LOW for write)
+
+(6) Data enable pin
+
+(7-14) Up to 8-bit data bus
+
+(15) Backlight +V
+
+(16) Backlight -V
+
+In the end, my error was connecting pin 5 to my 5V rail instead of GND,
+putting the LCD board in read mode instead of write mode. The process
+I used to isolate this was the following steps:
+
+1. start by hooking up backlight pins 15 and 16 to 5V and GND respectively
+(a resistor can be used between 15 and 5V to control backlight intensity)
+2. Connect pins 1 and 2 to GND and 5V respectively and 3 to a 10k
+potentiometer between GND and 5V.
+3. Connect the data pins (I used 4 bit mode, so pins 11-14), register
+select pin 4 and data enable pin 6 directly to your microcontrollor.
+4. Connect pin 5, the read/write control to GND if you plan on writing and
+5V if you plan on reading.
+
+After step 1. you should see the display backlight turn on with uniform
+color and brightness. By adjusting the potentiometer in part 2, you should
+see a row of 16x2 empty boxes indicating the display positions of the LCD
+screen. The potentiometer will adjust the contrast of these boxes.
+Steps 3 and 4, if performed correctly, will then allow you to write hello,
+world to the lcd as in the code example on the arduino site. The final
+product looked like this:
 
 ![lcd_circuit](/img/week8/lcd_circuit.jpg)
-
 
 ### NXT Ultrasonic Sensor
 
@@ -209,5 +244,11 @@ debugger in some cases:
 
 As can be seen in the (low quality) video, the ultrasonic sensor is
 relatively accurate to the true object distance and it correctly displays
-this distance on the LCD screen. Extensions of this project could include
-spinning a servo motor to a certain angle based on the distance of the object.
+this distance on the LCD screen. For fun I added a servo motor at the end,
+connecting the ground and 5V wires to my circuit accordingly and putting
+the control wire in pin 9 on the Arduino. This could be used to translate
+linear motion into rotational motion:
+
+![with_servo](/img/week8/with_servo.jpg)
+
+The final code for this circuit is available [here](/img/week8/ultrasonic_lcd.ino)
