@@ -9,6 +9,15 @@
     <updated>Tue, 04 Feb 2020 00:35:54 EST</updated>
     
     <item>
+      <title>Week 9</title>
+      <link>http://seansullivan.ai/physci-70/post/week9/</link>
+      <pubDate>Mon, 06 Apr 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week9/</guid>
+      <description>Networking My main project for the week was to use the radio modules to make a controller for a remote controlled car. To make this, I planned to use the motors from my NXT kit which I started to explore last week. The motors were much easier to understand than the complicated I2C protocol for the ultrasonic sensor. The motors have encoder pins to determine the motors speed and position and 2 pins to power the sensors for this.</description>
+    </item>
+    
+    <item>
       <title>Week 8</title>
       <link>http://seansullivan.ai/physci-70/post/week8/</link>
       <pubDate>Mon, 30 Mar 2020 15:56:31 -0500</pubDate>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 9 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week9/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://seansullivan.ai/physci-70" class="site-title">PHYSCI 70: Digital Fabrication</a>
+      <nav class="site-nav right">
+      <a href="http://seansullivan.ai/physci-70/about/">About</a>
+<a href="http://seansullivan.ai/physci-70/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Week 9</h1>
+        <span class="post-meta">Apr 6, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <h2 id="networking">Networking</h2>
+<p>My main project for the week was to use the radio modules to make
+a controller for a remote controlled car. To make this, I planned to use
+the motors from my NXT kit which I started to explore <a href="../../physci-70/post/week8/">last week</a>.
+The motors were much easier to understand than the complicated I2C
+protocol for the ultrasonic sensor. The motors have encoder pins to
+determine the motors speed and position and 2 pins to power the sensors
+for this. The final 2 pins are used to power the motor. Rather than
+needing all 6 pins like last week, I only needed these last two to power
+the motor. I found some helpful information on the pinout <a href="http://www.brickengineer.com/pages/2008/09/05/lego-nxt-motor-wiring/">here</a>.</p>
+<p>Last week I had spliced open one of the RJ12 cables that connects to the
+NXT sensors and motors. My soldering to individual wires did not hold up
+very well:</p>
+<p><img src="../../img/week9/old_rj12.jpg" alt="old_rj12"></p>
+<p>I cut open a new cable and this time I used some header pins I had lying
+around to create a more stable connection to a fixed set of pins that
+would fit neatly in a breadboard</p>
+<p><img src="../../img/week9/rj12_header.jpg" alt="rj12_header"></p>
+<p>So far these connections have been much sturdier. To drive two motors
+simultaneously both forward and backward, I used a motor driver. This
+driver has four connections for the motor power and 6 pins, 2 for ground
+and vcc, and 4 for left/right and forward/backward control. You can see
+the motor power connections here as red and black wires coming from green
+hubs on the motor driver board. On the other side of the driver are the
+input pins to the driver, which I connect to the Arduino digital pins.</p>
+<p><img src="../../img/week9/motor_driver.jpg" alt="motor_driver"></p>
+<p>Once I had the motors working, I added a radio module. The ratio module
+has 7 pins, 6 of which lined up very nicely in a row of female headers on
+my Arduino board because the <a href="https://tmrh20.github.io/RF24/">RF24 library</a> uses pins 11, 12, and 13 for
+MOSI, MISO, and SCK pins:</p>
+<p><img src="../../img/week9/radio_module.jpg" alt="radio_module"></p>
+<p>Having this receiver setup was not very much use without a transmitter. To
+set up my transmitter, I used the ItsyBitsy board originally.
+Unfortunately, I encountered an issue with the board where it would reset
+exactly every 32 seconds. This happened even when I uploaded an empty
+sketch and attached it to an external battery pack. Unable to solve this
+problem, even by updating the bootloader, I switched to the Adafruit
+Feather board. The pins required to connect to this board with the radio
+module were only slightly different from the receiver end. I connected
+these but was having trouble telling whether or not I had connected all of
+the pins correctly. The code below will output &ldquo;Failed&rdquo; if there is no
+receiver radio module receiving the data, even if I correctly configured
+the pins.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;SPI.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;RF24.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+RF24 <span style="color:#a6e22e">radio</span>(<span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">14</span>);
+byte addresses[][<span style="color:#ae81ff">6</span>] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;1&#34;</span>,<span style="color:#e6db74">&#34;2&#34;</span>};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>() {
+  Serial.begin(<span style="color:#ae81ff">115200</span>);
+  delay(<span style="color:#ae81ff">1000</span>);
+
+  radio.begin();
+  radio.setPALevel(RF24_PA_LOW);
+  radio.openWritingPipe(addresses[<span style="color:#ae81ff">0</span>]);
+  radio.openReadingPipe(<span style="color:#ae81ff">1</span>,addresses[<span style="color:#ae81ff">1</span>]);
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loop</span>() {
+  byte data <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  Serial.println(<span style="color:#e6db74">&#34;Sending: &#34;</span> <span style="color:#f92672">+</span> String(data));
+  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>radio.write( <span style="color:#f92672">&amp;</span>data, <span style="color:#ae81ff">1</span> )){
+    Serial.println(F(<span style="color:#e6db74">&#34;failed&#34;</span>));
+  }
+
+  delay(<span style="color:#ae81ff">200</span>);
+}
+</code></pre></div><p>To assess whether I correctly set up the pins, I added the line</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Serial.println(String(radio.isChipConnected() <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;not &#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;connected&#34;</span>);
+</code></pre></div><p>to the loop function. The function <code>radio.isChipConnected()</code> will return
+true if the microcontroller is successfully able to communicate with the
+radio module. I used this on both the transmitting and receiving end to
+check my connections. After these were working, I needed to add controls
+on the receiver to allow me to input commands for the motors to follow.</p>
+<p>To do this, I set up an array of four push buttons. One for forward, one
+for backward, and two for turning. To avoid crowding the pins of the
+microcontroller I wanted to use a single analog pin to read which button
+is pressed. I followed
+<a href="https://www.the-diy-life.com/multiple-push-buttons-on-one-arduino-input/">this</a>
+post which details how to use several resistors in series with push
+buttons to distinguish which button is pressed with a single
+<code>analogRead</code>. When a button is pressed the current will pass through
+a different number of resistors in parallel resulting in a different
+voltage reading at the analog pin. By experimenting with these voltages,
+I found appropriate thresholds to distinguish the buttons.  Here is the
+final circuitry for the buttons:</p>
+<p><img src="../../img/week9/push_buttons.jpg" alt="push_buttons"></p>
+<p>With the transmitter setup and connected to input, I observer the serial
+monitor of the receiver and was successfully receiving input. I wrote
+a quick if/else statement to control which motors were on and off
+depending upon the input received and the motors were working. To make
+nice housing for the Arduino and connect it to the motors, I built some
+LEGO casing with a spot for the external battery:</p>
+<p><img src="../../img/week9/lego_enclosure.jpg" alt="lego_enclosure"></p>
+<p>Together with the motors and an extra wheel for stability:</p>
+<p><img src="../../img/week9/complete_bot.jpg" alt="complete_bot"></p>
+<p>You can find code <a href="../../img/week9/code.zip">here</a> for the transmitter and receiver.
+Here is a video of the remote controlled bot in action:</p>
+<p><video controls src="../../img/week9/demo.mp4"></video></p>
+<h2 id="arduino-and-vim">Arduino and Vim</h2>
+<p>This week I also finally set up Arduino with my favorite editor vim. Vim
+is a modal editor that allows you to type and navigate your document with
+the keyboard only. It is very customizable and after a steep learning
+curve can make for very efficient editing. I was tired of the Arduino IDE
+which was painfully slow to use and lacked features I have come to expect
+in an IDE (regex substitutions, autocomplete, etc.). After looking into
+other solutions, I came across the
+<a href="https://www.google.com/search?client=firefox-b-1-d&amp;q=arduino+cli">arduino-cli</a>
+which is the official command line tool from Arduino that allows you to
+configure, board and port, as well as manage libraries and boards all from
+your terminal.</p>
+<p>After installing this tool I was able to configure the Huzzah board easily:</p>
+<p>I created a config file in <code>~/.arduino15/arduino-cli.yaml</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">board_manager</span>:
+  <span style="color:#66d9ef">additional_urls</span>:
+    - https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+</code></pre></div><p>and then ran</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">arduino-cli core update-index
+arduino-cli core install esp32:esp32
+</code></pre></div><p>Finally, I installed <a href="https://github.com/stevearc/vim-arduino">this</a> vim
+plugin by adding</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vimrc" data-lang="vimrc"><span style="color:#a6e22e">Plug</span> <span style="color:#e6db74">&#39;stevearc/vim-arduino&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">g</span>:<span style="color:#a6e22e">arduino_dir</span>=<span style="color:#e6db74">&#39;~/.arduino15/&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">g</span>:<span style="color:#a6e22e">arduino_serial_cmd</span> = <span style="color:#e6db74">&#39;cat {port}&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>to my <code>.vimrc</code> file (the configuration file for vim. With this
+configuration I am able to select the proper board and port and upload
+sketches without leaving vim. It also opens a split window with a serial
+monitor from the device after uploading.</p>
+<p>One of my favorite features of this vim plugin is that choosing the board
+uses a fuzzy finder so I no longer have to scroll through a long list of
+boards to find the right one &ndash; I can type itsy to select the ItsyBitsy M4
+for example.</p>
+<h2 id="desoldering-and-other-output">Desoldering and Other Output</h2>
+<p>This week I also purchased a solder sucker and had fun taking apart old
+electronics around the house. One fruitful deconstruction was an old air
+hockey table scoreboard we had in our basement. After taking the circuit
+out I found the following:</p>
+<p><img src="../../img/week9/hockey_display.jpg" alt="hockey_display">
+I recovered several parts from this circuit, the most interesting being
+a Piezo buzzer, 2 2-digit seven segment displays, and a 4-digit seven
+segment clock.</p>
+<h3 id="seven-segment-displays">Seven Segment Displays</h3>
+<p>Using the <a href="../../img/week9/ULD-8201CXDX.pdf">datasheet</a> that I found for the
+2-digit seven segment display, I learned that 7 of the pins control
+a segment in each of the digits and 2 of the pins control which digit is
+being controlled. This also told me that the display is common anode,
+meaning that all of the anodes of the LEDs are connected and each segment
+is controlled by switching power the cathodes. The pinouts of each seven
+segment display is different. <a href="https://www.circuitbasics.com/arduino-7-segment-display-tutorial/">This
+site</a>
+provided helpful techniques for identifying the pinout of your specific
+seven segment display. Using the SevSeg arduino library, the code was
+relatively simple:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;SevSeg.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+SevSeg sevseg;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>() {
+  byte numDigits <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+  byte digitPins[] <span style="color:#f92672">=</span> {A1, A2};
+  byte segmentPins[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>, A5, A4, A3, <span style="color:#ae81ff">7</span>};
+  <span style="color:#66d9ef">bool</span> resistorsOnSegments <span style="color:#f92672">=</span> true;
+  sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins, resistorsOnSegments);
+  sevseg.setBrightness(<span style="color:#ae81ff">20</span>);
+  sevseg.setNumber(<span style="color:#ae81ff">10</span>);
+}
+</code></pre></div><p>Here I configure the segment pins corresponding to each of the seven
+segments in this order:</p>
+<p><img src="../../img/week9/sev_seg_layout.png" alt="sev_seg_layout"></p>
+<p>and the digit pins corresponding to the common anode for each digit that
+I connect to two other pins.</p>
+<p>After wiring up the circuit and running the above code, I got the following:</p>
+<p><img src="../../img/week9/sev_seg_display.png" alt="sev_seg_display"></p>
+<p>This can be used to display simple numbers like the temperature by adding
+a thermistor.</p>
+<h3 id="piezo-buzzers">Piezo Buzzers</h3>
+<p>I was curious if the speaker I&rsquo;d found still worked and hadn&rsquo;t yet played
+with Piezo buzzers. I wanted to easily play any song I found the sheet
+music for. I play piano so it is easy for me to convert sheet music into
+notes such as &ldquo;E4&rdquo; or &ldquo;A2&rdquo; indicating the note and octave. The piezo
+buzzer takes frequencies as input so I needed to convert from note and
+octave to frequency. There is a mathematical relation between pitches and
+frequencies and this relation is logarithmic. <a href="https://www.johndcook.com/blog/2016/02/10/musical-pitch-notation/">This
+site</a>
+gives a good overview for those who are curious. Basically, every octave
+contains 12 half steps. When you go up an octave, you multiply the
+frequency of a note by 2. Every half step, then, you multiply a note by
+$2^{-1/12}$. The following function converts a string like &ldquo;A#3&rdquo; or &ldquo;Eb2&rdquo;
+to a frequency, where the first and optionally second character represent
+a note and the last character represents an octave.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">double</span> <span style="color:#a6e22e">frequency</span>(String note){
+  <span style="color:#66d9ef">int</span> letter <span style="color:#f92672">=</span> tolower(note.charAt(<span style="color:#ae81ff">0</span>)) <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;a&#39;</span>;
+  <span style="color:#66d9ef">int</span> halves <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> letter <span style="color:#f92672">-</span> (letter <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>; <span style="color:#75715e">// A=0, B=2, C=3, D=5, etc.
+</span><span style="color:#75715e"></span>
+  <span style="color:#66d9ef">if</span> (note.length() <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>) {
+    halves <span style="color:#f92672">+=</span> (note[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;#&#39;</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+  }
+  
+  <span style="color:#66d9ef">int</span> octave <span style="color:#f92672">=</span> note[note.length() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;5&#39;</span>;
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">440.0</span> <span style="color:#f92672">*</span> pow(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">*</span> halves <span style="color:#f92672">/</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">+</span> octave);
+}
+</code></pre></div><p>Now we can write songs like Fur Elise easily:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Note piece[] <span style="color:#f92672">=</span> {
+  Note(<span style="color:#e6db74">&#34;E4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;D#4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  
+  Note(<span style="color:#e6db74">&#34;E4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;D#4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;E4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;B4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;D4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;C4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  
+  Note(<span style="color:#e6db74">&#34;A4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>),
+  Note(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;C3&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;E3&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;A3&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  
+  Note(<span style="color:#e6db74">&#34;B4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>),
+  Note(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;E3&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;G#4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;B4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  
+  Note(<span style="color:#e6db74">&#34;C4&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>),
+  Note(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+  Note(<span style="color:#e6db74">&#34;E3&#34;</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">16</span>),
+};
+</code></pre></div><p>Here the first argument is a frequency with the empty string representing
+a rest, and the second argument is a duration to play the note for. I have
+defined the Note class as follows for convenience:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">class Note {
+  public:
+    Note()<span style="color:#f92672">:</span> note(<span style="color:#e6db74">&#34;&#34;</span>), duration(<span style="color:#ae81ff">1</span>) {};
+    
+    Note(String _note, <span style="color:#66d9ef">double</span> _duration)<span style="color:#f92672">:</span>
+      note(_note), duration(_duration) {};
+
+    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">frequency</span>(){
+      <span style="color:#66d9ef">int</span> letter <span style="color:#f92672">=</span> tolower(note.charAt(<span style="color:#ae81ff">0</span>)) <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;a&#39;</span>;
+      <span style="color:#66d9ef">int</span> halves <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> letter <span style="color:#f92672">-</span> (letter <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>;
+    
+      <span style="color:#66d9ef">if</span> (note.length() <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>) {
+        halves <span style="color:#f92672">+=</span> (note[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;#&#39;</span> <span style="color:#f92672">?</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+      }
+      
+      <span style="color:#66d9ef">int</span> octave <span style="color:#f92672">=</span> note[note.length() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#e6db74">&#39;5&#39;</span>;
+    
+      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">440.0</span> <span style="color:#f92672">*</span> pow(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">*</span> halves <span style="color:#f92672">/</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">+</span> octave);
+    }
+
+    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">isRest</span>() {
+      <span style="color:#66d9ef">return</span> note[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+    }
+
+    <span style="color:#66d9ef">double</span> duration;
+    String note;
+};
+</code></pre></div><p>Finally my loop code was as follows:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">double</span> pause <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">64</span>;
+<span style="color:#66d9ef">double</span> tempo <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">4</span>;
+
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loop</span>(){
+  <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(piece) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(piece[<span style="color:#ae81ff">0</span>]);
+  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> size; i<span style="color:#f92672">++</span>) {
+    Note n <span style="color:#f92672">=</span> piece[i];
+    <span style="color:#66d9ef">if</span> (piece[i].isRest()) {
+      noTone(buzzer);
+    } <span style="color:#66d9ef">else</span> {
+      tone(buzzer, piece[i].frequency());
+    }
+    delay(tempo <span style="color:#f92672">*</span> (piece[i].duration <span style="color:#f92672">-</span> pause));
+    noTone(buzzer);
+    delay(tempo <span style="color:#f92672">*</span> pause);
+  }
+}
+</code></pre></div><p>We put a brief pause in between each note and define an adjustable tempo
+for the song. I hope this code will help you in your own Piezo buzzer
+projects!</p>
+
+      </article>
+
+      
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+
