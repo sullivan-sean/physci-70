@@ -234,7 +234,7 @@ I connect to two other pins.
 
 After wiring up the circuit and running the above code, I got the following:
 
-![sev_seg_display](/img/week9/sev_seg_display.png)
+![sev_seg_display](/img/week9/sev_seg_display.jpg)
 
 This can be used to display simple numbers like the temperature by adding
 a thermistor.
