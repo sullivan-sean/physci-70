@@ -9,6 +9,15 @@
     <updated>Tue, 04 Feb 2020 00:35:54 EST</updated>
     
     <item>
+      <title>Week 10</title>
+      <link>http://seansullivan.ai/physci-70/post/week10/</link>
+      <pubDate>Mon, 13 Apr 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week10/</guid>
+      <description>Workout Tracking With plenty of time during quarantine to establish a consistent workout, I decided to build a workout tracker this week. Okay, workout tracker might be a bit of an overstatement. I built a simple force sensitive sensor that connects to a web app I&amp;rsquo;m running on my computer to log various forces over time. I used this to record me jump roping (one of my favorite workouts) as I typically do not have an easy way to objectively measure reps or intensity day over day.</description>
+    </item>
+    
+    <item>
       <title>Week 9</title>
       <link>http://seansullivan.ai/physci-70/post/week9/</link>
       <pubDate>Mon, 06 Apr 2020 15:56:31 -0500</pubDate>
