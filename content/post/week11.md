@@ -206,7 +206,7 @@ at proper resolution to see jumps. This code should be wrapped in a try,
 except block to ensure that the device has write access when trying to
 open the file. This would allow for a more elegant handling of any error.
 The complete code I used, including the MPU6050 library and dependencies,
-can be found in [this zip](/data/full_code.zip).
+can be found in [this zip](/img/week11/full_code.zip).
 
 While this code worked well for many seconds while connected to my computer
 When I ran this code on the actual device, connected to a 5V battery,
