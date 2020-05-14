@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Final Project - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/final/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://seansullivan.ai/physci-70" class="site-title">PHYSCI 70: Digital Fabrication</a>
+      <nav class="site-nav right">
+      <a href="http://seansullivan.ai/physci-70/about/">About</a>
+<a href="http://seansullivan.ai/physci-70/contact/">Contact</a>
+</form>
+
+      </nav>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</header>
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Final Project</h1>
+        <span class="post-meta">Apr 18, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <p>Table of Contents</p>
+<ol>
+<li><a href="#tldr">TL;DR</a></li>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#process">Process Outline</a></li>
+<li><a href="#housing">Housing Design (Week 10)</a></li>
+<li><a href="#acceldata">Proof Of Concept (Week 11)</a></li>
+<li><a href="#componentprep">Component Prep</a></li>
+<li><a href="#assembly">Assembly</a></li>
+<li><a href="#data_transmission">Data Transmission</a></li>
+<li><a href="#react">React Native App</a></li>
+<li><a href="#jump_detection">Jump Detection</a></li>
+<li><a href="#billofmaterials">Comprehensive Bill of Materials</a></li>
+<li><a href="#sourcecode">Source Code</a></li>
+</ol>
+<h2 id="tldr-a-nametldra">TL;DR <a name="tldr"></a></h2>
+<p>Over the past few weeks I&rsquo;ve built a smart jump rope:</p>
+<p><img src="../../img/week11/final_product.jpg" alt="final"></p>
+<p>As a preview of the final product, I put together this short demo video of
+the working final product, the jump rope together with a mobile app:</p>
+<p><video controls src="../../img/week11/demo_vid.mp4" style="width:800px"></video></p>
+<h2 id="motivation-a-namemotivationa">Motivation <a name="motivation"></a></h2>
+<p>I vividly remember my 3rd grade gym class participating in a Jump Rope for
+Heart Jumpathon. All of the students in our class stood out in the parking
+lot and jumped rope for a half hour. As I watched other kids run around
+while jumping, I only knew how to jump backwards and would do the dreaded
+&ldquo;double bounce&rdquo; between jumps.</p>
+<p>I rediscovered a jump rope a few months ago and have become an avid jump
+roper since, watching plenty of <a href="https://www.youtube.com/watch?v=1yHjnfABvhw">Buddy
+Lee</a> videos in awe. I&rsquo;ve
+slowly learned to jump properly and it has become a staple in my
+workout routine. While I&rsquo;ve used Strava and other social workout platforms
+in the past to keep track of my workouts, I haven&rsquo;t found anything for
+jumping rope and decided to make my own.</p>
+<p>In <a href="../../content/posts/week10">week 10</a> of the course, our input
+devices week, I used a small force sensor to track jumps on my foot. While
+this sensor worked pretty well, the resulting device was large and had to
+be taped to my foot. Instead, I opted for building a jump rope that syncs
+with my phone to track my workouts. There are plenty of jump ropes with
+<a href="https://www.amazon.com/s?k=jump+rope+digital+counter&amp;i=sporting&amp;ref=nb_sb_noss">digital
+counters</a>
+but these ropes typically aren&rsquo;t workout grade speed ropes and don&rsquo;t sync
+the data to an app for the same social fitness tracking as something like
+Strava.  I wanted a device that could measure the frequency of jumps and
+intensity of my workouts, and track progress over time.</p>
+<h2 id="process-outline-a-nameprocess-">Process Outline <a name="process" /></h2>
+<p>There are several things I will need to build for this that will combine
+what I have learned about 3D modeling and print, sensors, wireless
+communication/IoT, and APIs/programming. The end product will consist of
+an microcontroller circuit in a custom built handle for my jump rope that
+records information throughout my workout. After the workout is complete,
+which I will indicate with a button press, the information will be
+transmitted to my phone where it will be loaded into an app that backs
+this data up to a database.</p>
+<p>Here&rsquo;s a list of what I will need for the project (a bill of materials):</p>
+<ul>
+<li>3D printed housing</li>
+<li>Huzzah ESP32 board</li>
+<li>Accelerometer/gyroscope</li>
+<li>Infrared LED</li>
+<li>Other miscellaneous components (wires, resistors, etc.). This will
+become clear as I fully flesh out the circuit</li>
+</ul>
+<p>Data will be read from the accelerometer to determine how the rope is
+moving (to detect frequency of swings, number of swings, double unders,
+cross overs, etc.), while the Infrared LED can be used for heart rate
+monitoring as shown <a href="https://www.instructables.com/id/Simple-DIY-Pulse-Sensor/">here</a>.</p>
+<h4 id="housing-week-10-a-namehousing-">Housing (Week 10) <a name="housing" /></h4>
+<p>This week I will start out by designing the housing for my project.
+I already have a hollow jump rope handle but it is not quite large enough
+to house the esp32 board, which will be necessary for wireless
+communication. I will use this handle to gather data using the ItsyBitsy
+(which it is barely large enough to house). After I&rsquo;ve gathered data,
+I will be able to program everything and create slightly large 3D printed
+housing for the Huzzah Esp32.</p>
+<p>To construct appropriate housing, I used parametric design in Fusion 360.
+The handle itself measured about 150mm:</p>
+<p><img src="../../img/week11/handle_len.jpg" alt="handle_len"></p>
+<p>This handle has an ergonomic design that is nice to hold, and a screw on
+cap on the left hand end that can be unscrewed to insert weights.
+A bearing sits in the right hand end for smooth turning of the jump rope.
+When modeling, I had to keep in mind the inner and outer diameters of the
+handle as well, which I measured at (approximately) 20mm and 30mm
+respectively. I also looked up the bearing model which was a <a href="https://www.amazon.com/Bearing-Shielded-8x22x7-Miniature-Bearings/dp/B002BBICBK">608zz
+bearing</a>
+measuring 8x22x7, for inner diameter, outer diameter, and width respectively.</p>
+<p>Finally, I measured the limiting dimensions of the Huzzah, ItsyBitsy and
+accelerometer boards. The lengthwise dimension didn&rsquo;t matter to me so much
+as that goes along the length of the 150mm handle. The limiting width
+dimensions of the Huzzah and ItsyBitsy were 23mm and 16mm respectively.
+The accelerometer was smaller than both of these so I didn&rsquo;t need to
+measure it.</p>
+<p>Note that the board cannot sit directly at the diameter either because of
+the header pins, this is a problem I would tackle later but to begin with,
+I used parametric design in fusion. I did not make the design very
+ergonomic to begin with and focused on a bare cylindrical MVP for a first
+prototype:</p>
+<p><img src="../../img/week11/handle_full.png" alt="handle_full"></p>
+<p>At the left end, I have a removable, press fit cap:
+<img src="../../img/week11/handle_cap_end.png" alt="handle_cap_end">
+<img src="../../img/week11/handle_cap.png" alt="handle_cap">
+<img src="../../img/week11/handle_cap.png" alt="handle_cap"></p>
+<p>The other end of the handle has an inset for the bearing:</p>
+<p><img src="../../img/week11/handle_bearing_end.png" alt="handle_bearing_end"></p>
+<p>The insets and fillets here make this piece best created by 3D printing.</p>
+<h2 id="proof-of-concept-week-11-a-nameacceldata-">Proof of Concept (Week 11) <a name="acceldata" /></h2>
+<p>This week I ordered a bearing and sent the casing print file to my friend.
+While waiting for these parts to make the full casing, I put together
+a smaller circuit using the ItsyBitsy instead of the Huzzah to ensure that
+the accelerometer would provide data with enough signal for this project
+to be viable.</p>
+<p>The MPU6050 uses I2C communication, so I needed to connect the SCL and SDA
+pins to the ItsyBitsy&rsquo;s corresponding pins and also needed to connect VCC
+and ground. Besides this, there wasn&rsquo;t anything I needed to connect. For
+space purposes I decided to solder the accelerometer directly to the
+IstyBitsy header pins and then solder wires within the header pins to VCC
+and ground:</p>
+<p><img src="../../img/week11/itsy.jpg" alt="itsy"></p>
+<p>I soldered as minimally as possible while maintaining a solid electrical
+connection on the header pins so that it would be easy to remove later.
+While this is a bit of a hacky solution for now, the circuit was able to
+gather data and wasn&rsquo;t any larger than the ItsyBitsy itself, meaning it
+would fit into my current housing (my old jump rope handle).</p>
+<p>While the circuit was able to gather data, the ItsyBitsy does not come
+with a bluetooth or wifi module built in like the Huzzah, and so I had to
+find a way to store the data on the ItsyBitsy. Luckily CircuitPython has
+a <a href="https://learn.adafruit.com/circuitpython-essentials/circuitpython-storage">storage</a>
+module and a <a href="https://github.com/adafruit/Adafruit_CircuitPython_MPU6050/">package</a> for interfacing with the MPU6050.
+The storage module allows a program to write to the flash memory of the chip.
+While there is not a ton of memory, the python <code>os</code> module is able to
+check remaining disk space so I was able to make sure I didn&rsquo;t run out. In
+order to set up CircuitPython I first needed to copy a new bootloader to
+run python code on the microcontroller. On their site they provide
+a <a href="https://learn.adafruit.com/welcome-to-circuitpython/installing-circuitpython">uf2</a>
+file that can just be copied directly on to the drive.</p>
+<p>With everything installed, setting up the MPU6050 was as easy as</p>
+<pre><code>import board
+import adafruit_mpu6050
+
+i2c = busio.I2C(board.SCL, board.SDA)
+mpu = adafruit_mpu6050.MPU6050(i2c)
+
+print(mpu.acceleration)
+</code></pre><p>but printing acceleration just once isn&rsquo;t very useful.</p>
+<p>I needed to combine this with the storage module to write a file.
+CircuitPython storage writing is a little complicated. Basically, the
+board can be in one of two modes at any given time. Either the script
+<code>code.py</code> can write to device storage, or the computer connected to the
+microcontroller can write to device storage. This can be configured in the
+<code>boot.py</code> file that is run every time the computer is connected:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> storage
+
+computer_has_write <span style="color:#f92672">=</span> False
+storage<span style="color:#f92672">.</span>remount(<span style="color:#e6db74">&#34;/&#34;</span>, computer_has_write)
+</code></pre></div><p>Note that, if you add this <code>boot.py</code> file to your device and reconnect it
+to your computer, you will now not be able to edit <code>boot.py</code> or <code>code.py</code>
+because the computer does not have write privileges. How can we stop this
+behavior then? By using the python REPL on the device we can issue
+commands that will be run by the microcontroller to move the <code>boot.py</code> file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> os
+<span style="color:#f92672">&gt;&gt;&gt;</span> os<span style="color:#f92672">.</span>rename(<span style="color:#e6db74">&#39;boot.py&#39;</span>, <span style="color:#e6db74">&#39;boot.old&#39;</span>)
+</code></pre></div><p>Note that you can access the python REPL for the device through the serial
+monitor using a program like
+<a href="https://wiki.archlinux.org/index.php/GNU_Screen">screen</a> on the
+appropriate serial port.</p>
+<p>The process for uploading code has become a little more complicated with
+this added step (normally you can just save changes to <code>code.py</code>), but it
+is not overly cumbersome.</p>
+<p>Now that we have access to device storage, we can write observations in
+a loop to a csv:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> os
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;/test.csv&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>) <span style="color:#66d9ef">as</span> fp:
+    i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">while</span> True:
+        <span style="color:#75715e"># Write out the data</span>
+        line <span style="color:#f92672">=</span> (time<span style="color:#f92672">.</span>monotonic_ns(),) <span style="color:#f92672">+</span> mpu<span style="color:#f92672">.</span>acceleration <span style="color:#f92672">+</span> mpu<span style="color:#f92672">.</span>gyro
+        fp<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;{}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#39;,&#39;</span><span style="color:#f92672">.</span>join(str(a) <span style="color:#66d9ef">for</span> a <span style="color:#f92672">in</span> line)))
+        fp<span style="color:#f92672">.</span>flush()
+
+        <span style="color:#75715e"># Make sure there is enough space left on device to continue</span>
+        <span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>statvfs(<span style="color:#e6db74">&#34;/&#34;</span>)[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">20</span>:
+            <span style="color:#66d9ef">break</span>
+
+        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.01</span>)
+</code></pre></div><p>This code prints out the time, acceleration, and gyro information at about
+100 Hz, which should be more than enough to track movements of the handle
+at proper resolution to see jumps. This code should be wrapped in a try,
+except block to ensure that the device has write access when trying to
+open the file. This would allow for a more elegant handling of any error.
+The complete code I used, including the MPU6050 library and dependencies,
+can be found in <a href="../../img/week11/full_code.zip">this zip</a>.</p>
+<p>While this code worked well for many seconds while connected to my computer
+When I ran this code on the actual device, connected to a 5V battery,
+however, I encountered an inconsistent issue. Sometimes, the device would
+reset itself to the default CircuitPython &ldquo;Hello, World!&rdquo; program code.
+The first time this happened I lost all of my code and had to start again.
+I haven&rsquo;t been able to determine whether this was because of writing to
+too much space, protected space, or something entirely different. I was
+able to collect data after several attempts and got the following:</p>
+<p><img src="../../img/week11/accel.jpg" alt="data_plot"></p>
+<p>This plot displays the x, y, and z acceleration over time. I used
+a calibration period before the jumping to center the data at rest where
+acceleration is 0 for all axes. The z axis seems to have the best signal
+on the oscillations of the height of the handle, which is to be expected
+given the jumping motion. The most accurate count would be to trace the
+handles movement using all three directions of motion but for simplicity
+I started looking at just the z data. I used the python libraries <code>pandas</code>
+and <code>scipy</code> to do some very basic data analysis:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;test.csv&#39;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span>, header<span style="color:#f92672">=</span>None)
+df<span style="color:#f92672">.</span>columns <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;time&#39;</span>, <span style="color:#e6db74">&#39;x&#39;</span>, <span style="color:#e6db74">&#39;y&#39;</span>, <span style="color:#e6db74">&#39;z&#39;</span>]
+df[<span style="color:#e6db74">&#39;time&#39;</span>] <span style="color:#f92672">/=</span> <span style="color:#ae81ff">1000</span>
+df <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>set_index(<span style="color:#e6db74">&#39;time&#39;</span>)
+
+fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">8</span>))
+peaks <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>z<span style="color:#f92672">.</span>iloc[scipy<span style="color:#f92672">.</span>signal<span style="color:#f92672">.</span>find_peaks(df<span style="color:#f92672">.</span>z, prominence<span style="color:#f92672">=</span><span style="color:#ae81ff">350</span>)[<span style="color:#ae81ff">0</span>]]
+plt<span style="color:#f92672">.</span>scatter(peaks<span style="color:#f92672">.</span>index, peaks<span style="color:#f92672">.</span>values, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;x&#39;</span>, color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;b&#39;</span>)
+df<span style="color:#f92672">.</span>z<span style="color:#f92672">.</span>plot(color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;g&#39;</span>)
+</code></pre></div><p>which resulted in the following plot with peaks:</p>
+<p><img src="../../img/week11/peaks.jpg" alt="peaks"></p>
+<p>Overall there were 29 peaks, but I only jumped 15 times over this
+duration, suggesting some sort of double counting. While this result was
+not perfect, it validated that there was rich information in the
+accelerometer data to count jumps.</p>
+<h2 id="component-prep-a-namecomponentprep-">Component Prep <a name="componentprep" /></h2>
+<p>For the real design, I needed the Bluetooth capabilities of the Huzzah. To
+make the board smaller, I trimmed off all of the header pins. I first
+removed all of the black plastic material on the pins:</p>
+<p><img src="../../img/week11/huzzah_header.jpg" alt="header"></p>
+<p>and then desoldered the pins, heating from the bottom of the board, which
+I found to be better to avoid pulling the conductive plates off of the
+board. After desoldering, I fed some spare wire through the SDA and SCL
+ports, which I then connected to the accelerometer:</p>
+<p><img src="../../img/week11/huzzah_wire.jpg" alt="huzzah_wire">
+<img src="../../img/week11/huzzah_accel.jpg" alt="huzzah_accel"></p>
+<p>With this in place, I needed only to connect the VCC and GND pins of the
+MPU6050 to the Huzzah, just as with the ItsyBitsy. I again used
+a makeshift solution with short wires and soldered these together. The
+final Huzzah assembly was this:</p>
+<p><img src="../../img/week11/huzzah_final.jpg" alt="huzzah_final"></p>
+<p>With the Huzzah board put together, I made measurements and adjusted my
+original housing design.  First, I added a slot down a diameter to allow
+the board to sit in a fixed way. I kept the inner diameter of 20mm and
+made the slot wide enough to fit the 23mm width of the Huzzah board:</p>
+<p><img src="../../img/week11/into_handle.jpg" alt="down"></p>
+<p>This is my second iteration at a slot down the middle. In my first print,
+I did not leave enough room for the lipo port and made this slot only 2mm
+in width to fit the board. After a lot of time spent trying to file the
+inside and make it bigger to fit the lipo port, I eventually opted to
+print with this much larger hole.</p>
+<p>Besides this change, the overall shape of the print remained largely the
+same but I also added a larger inset under the bearing so that the
+electronic components couldn&rsquo;t interfere with the bearing at all:</p>
+<p><img src="../../img/week11/bearing_end.jpg" alt="bearing_end"></p>
+<p>Here are the final files I used for the
+<a href="../../img/week11/handle_main.stl">handle</a> and <a href="../../img/week11/handle_cap.stl">handle
+cap</a></p>
+<p>The last component I needed was a power supply. While the lipo port on the
+huzzah would be the best option in normal circumstances, I couldn&rsquo;t find
+a lipo battery that would ship here in time for the final project.
+Instead, I resorted to smaller coin cell batteries. The batteries I had
+lying around the house all had insufficient current output for the
+Bluetooth spikes from the Huzzah board, which can reach up to. The 5V
+rechargeable batteries supplied by our class had output of 1Amp and worked
+very reliably with the board so I looked to match this as closely as
+possible. The <a href="https://www.reddit.com/r/esp8266/comments/3q8sob/running_a_huzzah_esp8266_on_a_3v_coin_battery/cwd4cqz/">smallest feasible
+battery</a>
+seemed to be the CR123, a common camera battery. I knew I could get this
+battery and it fit well in the dimensions of the handle, having a diameter
+of only 17mm. Unfortunately, I did not have an easy way to connect this to
+the microusb port. To work around this I disassembled a microusb cord:</p>
+<p><img src="../../img/week11/microusb.jpg" alt="Microusb"></p>
+<p>I ended up removing even these wires in favor of my own soldered on wires.</p>
+<p>The final materials for my project, read to be assembled, are shown below:</p>
+<p><img src="../../img/week11/materials.jpg" alt="materials"></p>
+<h2 id="assembly">Assembly</h2>
+<p>With everything in order, it was time to start putting things together.
+While my research on batteries lead me to believe I would only need 1 of
+the CR123 batteries, the voltage and amperage combination of these
+batteries still proved too low with just 1. Adding a second battery meant
+my components just barely did not all fit within the housing. I had
+difficulty holding the batteries together in a secure way. Using
+electrical tape to hold wires to the battery terminals was not secure. In
+the end, I disassembled a spare 9V battery holder and used the protrusions
+that make contact with the terminals of the 9V batteries to make contact
+with the CR123 batteries. I held these connections together with tape,
+which was much more reliable than the plain wires. I then soldered these
+connections to the microusb terminal. I added a rubber band for extra
+security and ended up with the following hacky power supply for the microcontroller:</p>
+<p><img src="../../img/week11/half_assembled.jpg" alt="half_assembled"></p>
+<p>As can be seen in the photo, this assembly would not fit fully in the handle.</p>
+<p>Next, I had to insert the bearing in the other end of the handle. This was
+meant to be press fit and it was a tight squeeze, perfectly sized. I ended
+up using an old bearing as the one I ordered was delayed by the pandemic. The
+bearing was tight so I first loosened it with acetone, which was a handy
+trick to loosen it quickly. Then I used my soldering iron to heat the
+plastic around the bearing before pushing it in. Just heating the rim
+allows the bearing to slide in more easily and once it was partly in,
+I pushed it against the flat surface of my desk to make it flush with the
+handle end:</p>
+<p><video controls src="../../img/week11/bearing_solder_2.mp4" style="width:800px"></video></p>
+<p>With almost everything in place, I fed my existing jump rope through the
+handle:</p>
+<p><img src="../../img/week11/rope_in_handle.jpg" alt="rope_in_handle"></p>
+<p>and inserted the batteries and then the microcontroller into the other
+end. While the housing didn&rsquo;t quite fit everything and I couldn&rsquo;t fit the
+3D printed handle cap on, the previous handle had a hollow cap that
+I taped onto the end:</p>
+<p><img src="../../img/week11/taped_handle.jpg" alt="taped_handle"></p>
+<h2 id="data-transmission-a-hrefdata_transmission-">Data Transmission <a href="data_transmission" /></h2>
+<p>With everything assembled, I began working on the Arduino code for data
+transmission, including the I2C interface in C. Note that I used
+CircuitPython on the ItsyBitsy for the storage module. Because I was
+transmitting over Bluetooth on the ESP32, I did not require access to
+storage. Overall, I found CircuitPython overly complicated and used C in
+the final product.</p>
+<p>The major components of my code were the I2C interface for the
+accelerometer and the Bluetooth module.</p>
+<h4 id="i2c">I2C</h4>
+<p>The I2C library is called
+<a href="https://www.arduino.cc/en/reference/wire">Wire</a>. By looking at the data
+specification sheet for the
+<a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf">MPU6050</a>,
+I found that I could change the sensitivity of the accelerometer with the
+following transmission with the Wire library:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Wire.beginTransmission(MPU);       <span style="color:#75715e">// Start communication with MPU6050 // MPU=0x68
+</span><span style="color:#75715e"></span>Wire.write(<span style="color:#ae81ff">0x1C</span>);                  <span style="color:#75715e">// Talk to the register 1C (accelerometer sensitivity)
+</span><span style="color:#75715e"></span>Wire.write(<span style="color:#ae81ff">0x01</span>);                  <span style="color:#75715e">// Write values 1 =&gt; +-4g sensitivity
+</span><span style="color:#75715e"></span>Wire.endTransmission(true);        <span style="color:#75715e">// end the transmission
+</span></code></pre></div><p>While I only needed the default +-2g range, knowing how to alter these
+settings was good.  The commands I ended up using were first resetting the
+device at the start of my setup function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Wire.begin();                      <span style="color:#75715e">// Initialize communication
+</span><span style="color:#75715e"></span>Wire.beginTransmission(MPU);       <span style="color:#75715e">// Start communication with MPU6050 // MPU=0x68
+</span><span style="color:#75715e"></span>Wire.write(<span style="color:#ae81ff">0x6B</span>);                  <span style="color:#75715e">// Talk to the register 6B
+</span><span style="color:#75715e"></span>Wire.write(<span style="color:#ae81ff">0x00</span>);                  <span style="color:#75715e">// Make reset - place a 0 into the 6B register
+</span><span style="color:#75715e"></span>Wire.endTransmission(true);        <span style="color:#75715e">// end the transmission
+</span></code></pre></div><p>As well as requesting Accelerometer data in the loop function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Wire.beginTransmission(MPU);
+Wire.write(<span style="color:#ae81ff">0x3B</span>); <span style="color:#75715e">// Start with register 0x3B (ACCEL_XOUT_H)
+</span><span style="color:#75715e"></span>Wire.endTransmission(false);
+Wire.requestFrom(MPU, <span style="color:#ae81ff">6</span>, true); <span style="color:#75715e">// Read 6 registers total, each axis value is stored in 2 registers
+</span></code></pre></div><p>I parsed the 6 bytes of accelerometer data by reading 6 times and using
+bitwise operators to combine the information. This combines 2 bytes into
+a single value for the X, Y, and Z axis:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">values[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (Wire.read() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> Wire.read()); <span style="color:#75715e">// X-axis value
+</span><span style="color:#75715e"></span>values[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (Wire.read() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> Wire.read()); <span style="color:#75715e">// Y-axis value
+</span><span style="color:#75715e"></span>values[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> (Wire.read() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> Wire.read()); <span style="color:#75715e">// Z-axis value
+</span></code></pre></div><p>Note that these values are all integers.  Another useful piece of
+information from the datasheet is that dividing by 16384 converts these
+raw integer signals to corresponding force values in units of &ldquo;g&rdquo;,
+gravitational force units. With this working, I sought to set up Bluetooth.</p>
+<h4 id="bluetooth-low-energy">Bluetooth Low Energy</h4>
+<p>I hadn&rsquo;t used Bluetooth before so I set out to understand the protocol and
+how things worked before approaching any libraries.</p>
+<p>This site <a href="https://www.oreilly.com/library/view/getting-started-with/9781491900550/ch01.html">here</a>
+was helpful in getting a comprehensive understanding of the technology,
+but much of it was irrelevant for implementation. The most important
+aspect of Bluetooth Low Energy for this application was understanding
+services and characteristics:</p>
+<p><img src="http://nilhcem.com/public/images/20170502/01_gatt-diagram.png" alt="ble"></p>
+<p>Services each have a universally unique identifier (UUID) and can contain
+multiple characteristics, which also each have their own unique
+identifier. Services are groupings of similar types of actions that
+a client or server can take in Bluetooth transmission. One logical setup
+for this application would be to have a service for transmission of data
+with three channels, or characteristics, one for each axis. While this
+would be straightforward in the sense that each characteristic would only
+have to transmit a single number, it is less convenient to receive this
+data at different times when it is all recorded and transmitted at the
+same time. Instead I opted for a single service and single characteristic.
+This characteristic would transmit an array of bytes, containing the
+integer X, Y, and Z values from the sensor as well as a time reading from
+the <code>millis</code> function in Arduino so that if there were irregularly spaced
+measurements, the receiver would know.</p>
+<p>To create the device and characteristic, I followed the example code for
+BLE_notify, which is included with the
+<a href="https://www.arduino.cc/en/Reference/ArduinoBLE">ArduinoBLE</a> library that
+makes BLE connection relatively straightforward. I first Initialize UUIDs
+and callbacks for the BLEServer so that the device can keep track of when
+it is connected and not:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define SERVICE_UUID        &#34;4fafc201-1fb5-459e-8fcc-c5c9c331914b&#34;
+</span><span style="color:#75715e">#define CHARACTERISTIC_UUID &#34;beb5483e-36e1-4688-b7f5-ea07361b26a8&#34;
+</span><span style="color:#75715e"></span>
+class MyServerCallbacks: public BLEServerCallbacks {
+    <span style="color:#66d9ef">void</span> onConnect(BLEServer<span style="color:#f92672">*</span> pServer) {
+      deviceConnected <span style="color:#f92672">=</span> true;
+    };
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onDisconnect</span>(BLEServer<span style="color:#f92672">*</span> pServer) {
+      deviceConnected <span style="color:#f92672">=</span> false;
+    }
+};
+</code></pre></div><p>Then in my setup code, I create the device, service, and characteristic.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// Create the BLE Device
+</span><span style="color:#75715e"></span>BLEDevice<span style="color:#f92672">::</span>init(<span style="color:#e6db74">&#34;ESP32&#34;</span>);
+
+<span style="color:#75715e">// Create the BLE Server
+</span><span style="color:#75715e"></span>pServer <span style="color:#f92672">=</span> BLEDevice<span style="color:#f92672">::</span>createServer();
+pServer<span style="color:#f92672">-&gt;</span>setCallbacks(new MyServerCallbacks());
+
+<span style="color:#75715e">// Create the BLE Service
+</span><span style="color:#75715e"></span>BLEService <span style="color:#f92672">*</span>pService <span style="color:#f92672">=</span> pServer<span style="color:#f92672">-&gt;</span>createService(SERVICE_UUID);
+
+<span style="color:#75715e">// Create a BLE Characteristic
+</span><span style="color:#75715e"></span>pCharacteristic <span style="color:#f92672">=</span> pService<span style="color:#f92672">-&gt;</span>createCharacteristic(
+                    CHARACTERISTIC_UUID,
+                    BLECharacteristic<span style="color:#f92672">::</span>PROPERTY_READ   <span style="color:#f92672">|</span>
+                    BLECharacteristic<span style="color:#f92672">::</span>PROPERTY_WRITE  <span style="color:#f92672">|</span>
+                    BLECharacteristic<span style="color:#f92672">::</span>PROPERTY_NOTIFY <span style="color:#f92672">|</span>
+                    BLECharacteristic<span style="color:#f92672">::</span>PROPERTY_INDICATE
+                  );
+
+<span style="color:#75715e">// https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
+</span><span style="color:#75715e">// Create a BLE Descriptor
+</span><span style="color:#75715e"></span>pCharacteristic<span style="color:#f92672">-&gt;</span>addDescriptor(new BLE2902());
+
+<span style="color:#75715e">// Start the service
+</span><span style="color:#75715e"></span>pService<span style="color:#f92672">-&gt;</span>start();
+</code></pre></div><p>Finally, we must let other Bluetooth devices know we are available. This
+is referred to as advertising. Also during setup, we begin advertising the
+availability of the service.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// Start advertising
+</span><span style="color:#75715e"></span>BLEAdvertising <span style="color:#f92672">*</span>pAdvertising <span style="color:#f92672">=</span> BLEDevice<span style="color:#f92672">::</span>getAdvertising();
+pAdvertising<span style="color:#f92672">-&gt;</span>addServiceUUID(SERVICE_UUID);
+pAdvertising<span style="color:#f92672">-&gt;</span>setScanResponse(false);
+pAdvertising<span style="color:#f92672">-&gt;</span>setMinPreferred(<span style="color:#ae81ff">0x0</span>);  <span style="color:#75715e">// set value to 0x00 to not advertise this parameter
+</span><span style="color:#75715e"></span>BLEDevice<span style="color:#f92672">::</span>startAdvertising();
+</code></pre></div><p>In my loop after storing the values for the accelerometer in the values
+array above, we copy the bytes from this array to the characteristic and
+use the notify function to transmit the data to a connected device.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">pCharacteristic<span style="color:#f92672">-&gt;</span>setValue((uint8_t<span style="color:#f92672">*</span>) <span style="color:#f92672">&amp;</span>values, <span style="color:#ae81ff">10</span>);
+pCharacteristic<span style="color:#f92672">-&gt;</span>notify();
+</code></pre></div><p>Note that I wrap this notification, as well as the I2C communication, in
+an if statement that checks if the device is connected via Bluetooth. This
+avoids unnecessary computation when there is nobody to communicate with.</p>
+<p>The full final code for the Arduino can be found <a href="../../img/week11/ble.ino">here</a>.</p>
+<h2 id="react-native-mobile-app-a-namereact-">React Native Mobile App <a name="react" /></h2>
+<p>Simultaneous to developing the Android code, I needed to develop another
+Bluetooth device to double check the transmission was working properly.
+I have used <a href="https://reactnative.dev/">React Native</a> to build cross platform apps before,
+and <a href="https://expo.io/">Expo</a> makes this particularly convenient by
+abstracting away any code specific to iOS or Android so that you can
+program in pure Javascript to create an app that works for both platforms.
+Unfortunately, however, Expo does not yet support Bluetooth, so I opted
+for vanilla React Native. This came with a learning curve as I had to do
+more manual setup of my environment to debug the app on my phone. I found
+the guides on <a href="https://reactnative.dev/docs/environment-setup">project
+setup</a> and <a href="https://reactnative.dev/docs/running-on-device">device-based
+debugging</a> to be
+particularly helpful.</p>
+<p>I develop on Linux and was developing for Android so I installed Android
+Studio and found it very important that I setup the corresponding
+environment variables in my <code>~/.bashrc</code> config file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export ANDROID_HOME<span style="color:#f92672">=</span>$HOME/Android/Sdk
+export PATH<span style="color:#f92672">=</span>$PATH:$ANDROID_HOME/emulator:$PATH:$ANDROID_HOME/tools:$PATH:$ANDROID_HOME/tools/bin:$PATH:$ANDROID_HOME/platform-tools
+</code></pre></div><p>With Android Studio and <code>node.js</code> installed, I enabled USB debugging on my
+Android phone and plugged it into my computer. From there it was as easy as running</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npx react-native init myProject
+npx react-native start
+npx react-native run-android
+</code></pre></div><p>to start developing with live updates from the code to my phone.</p>
+<p>Given that the code for this part of the project is several hundred lines,
+it would be difficult to comprehensively explain it all here. I will focus
+on my usage of the Bluetooth library, and omit most of the React specific
+tutorial information besides setup as there are plenty of other great
+tutorials out there for that.</p>
+<p>For the project I used
+<a href="https://github.com/Polidea/react-native-ble-plx">this</a> library providing
+BLE support for react native apps. The documentation of this library is
+not the best so I had to do some digging in the code to fully understand
+how to use it.</p>
+<p>First, the Bluetooth manager object allowed me to scan for an connect to
+devices, the important methods I used were:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">BleManager</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react-native-ble-plx&#39;</span>;
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">manager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">BleManager</span>();
+
+<span style="color:#a6e22e">manager</span>.<span style="color:#a6e22e">startDeviceScan</span>(<span style="color:#66d9ef">null</span>, <span style="color:#66d9ef">null</span>, <span style="color:#a6e22e">onDeviceFound</span>);   <span style="color:#75715e">// calls onDeviceFound whenever a new device is discovered (includes repeats)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">manager</span>.<span style="color:#a6e22e">stopDeviceScan</span>();                             <span style="color:#75715e">// stops current scan
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">manager</span>.<span style="color:#a6e22e">connectToDevice</span>(<span style="color:#a6e22e">deviceId</span>);                    <span style="color:#75715e">// connects to device with id deviceId, returns a device object
+</span></code></pre></div><p>Once connected to a device, several other methods become available. The
+following methods allowed me to find the characteristic with the right
+UUID to read from to.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">device</span>.<span style="color:#a6e22e">discoverAllServicesAndCharacteristics</span>();
+<span style="color:#a6e22e">device</span>.<span style="color:#a6e22e">services</span>();
+<span style="color:#a6e22e">device</span>.<span style="color:#a6e22e">characteristicsForService</span>(<span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">uuid</span>)
+</code></pre></div><p>Each characteristic returned by the last function has a <code>monitor</code> method
+that will be called every time data is received. I process this data by
+adding each data point to a long list of data points. In this large array,
+I am able to process the stream of data in near real time. The data is
+received as a string of characters in base64 encodings. Some of these
+could read <code>AQAAAA==</code>, for example. To decode this I used a library to
+convert the base64 string into raw bytes. I then built up the raw bytes
+into 16 and 32 bit integers (16 for the x, y, and z measurements and 32
+for the time) being very careful about bit ordering (<a href="https://en.wikipedia.org/wiki/Endianness">little endian vs. big
+endian</a>).</p>
+<p>One of the first things I did after loading the data was to create a real
+time plotting chart to visualize the data. For this I used the
+<code>react-native-svg-charts</code> library.
+<a href="https://github.com/JesperLekland/react-native-svg-charts/pull/80">This</a>
+pull request specifying how to make charts with multiple lines was
+especially helpful. The full code for the chart I made can be found in the
+<code>MultlineChart.js</code> file in the source code at the end of this section.
+Being able to visualize the data helped me understand what patterns
+I could pick up on to determine when a jump had occurred. Here is an
+example of one of the charts I used for debugging:</p>
+<p><img src="../../img/week11/jump_chart.png" alt="jump_chart"></p>
+<p>I also added the ability to export the data to csv. I used this for easier
+data processing in python, where libraries like <code>numpy</code> and <code>scipy</code> in
+a Jupyter notebook make for much easier data analysis than javascript in
+a mobile app. The interface was pretty minimal beyond this, containing
+a menu for connecting Bluetooth devices:</p>
+<p><img src="../../img/week11/devices_menu.png" alt="devices_menu"></p>
+<p>and an even simpler interface with developer mode disabled:</p>
+<p><img src="../../img/week11/disconnected_app.png" alt="disconnected_app"></p>
+<p>The source code for the app is available <a href="../../img/week11/react.zip">here</a></p>
+<h2 id="detecting-jumps-a-hrefjump_detection-">Detecting Jumps <a href="jump_detection" /></h2>
+<p>With the transmission and interface working properly, the final part of
+the project was to robustly detect the number of jumps given the
+accelerometer data. By trying several different algorithms I came up with
+what I found to be the best solution, but it is a constant work in progress.</p>
+<p>The main idea behind my jump detection algorithm is that jumps will be
+represented by peaks in the Z and X axis data (the y-axis is along the
+direction of the handle and won&rsquo;t have much variability for normal jumps).
+Whether the peak is in the Z or X axis depends on the orientation of the
+handle in the jumpers hand. In the simplest case, the Z axis will be
+facing upwards and the greatest variability will be in this axis as the
+jumper jumps upwards. Because of the circular motion of the wrists while
+jumping, there will still be some movement in the X direction.</p>
+<p>I first focused only on the Z axis and thought about how to detect peaks.
+Largely inspired by
+<a href="https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/57889588#57889588">this</a>
+post on Stackoverflow, I made the assumption that peaks would lie far away
+from the running mean of the data. I computed a running mean and standard
+deviation in real time as data came in based on the last $k$ data points.
+If the next data point was greater than $z$ standard deviations away from
+this mean then that data point is considered either a positive or negative
+peak. If we keep the influence of peaks in the running average we could
+have many peaks in a row that bring up the mean and cause new peaks to go
+undetected. Instead, detected peaks are cut by a multiplicative factor $i$
+in the calculation of future means and standard deviations.</p>
+<p>In javascript, we have</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">a</span> =&gt; <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">reduce</span>((<span style="color:#a6e22e">acc</span>, <span style="color:#a6e22e">val</span>) =&gt; <span style="color:#a6e22e">acc</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">val</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">mean</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">a</span> =&gt; <span style="color:#a6e22e">sum</span>(<span style="color:#a6e22e">a</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">length</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">variance</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">a</span>) =&gt; {
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mean</span>(<span style="color:#a6e22e">a</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">mean</span>(<span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">val</span> =&gt; Math.<span style="color:#a6e22e">pow</span>(<span style="color:#a6e22e">val</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">m</span>, <span style="color:#ae81ff">2</span>)));
+}
+
+<span style="color:#75715e">// determine whether value is a peak, given an array lag of the past k points
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isPeak</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">lag</span>, <span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">z_threshold</span>) =&gt; {
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">z</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">value</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">mean</span>(<span style="color:#a6e22e">lag</span>)) <span style="color:#f92672">/</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">variance</span>(<span style="color:#a6e22e">lag</span>));
+  <span style="color:#66d9ef">if</span> (Math.<span style="color:#a6e22e">abs</span>(<span style="color:#a6e22e">z</span>) <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">z_threshold</span>) <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">sign</span>(<span style="color:#a6e22e">z</span>);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>In addition to this code, we need to maintain a list of data as we see it
+and data that is modified as detailed above by the multiplicative factor
+$i$ depending upon what <code>isPeak</code> returns.</p>
+<p>This running average technique left me with 3 parameters to play with.
+I found $z=2.5$ with $k=40 and $i=0.1$ to be a good combination through
+several sets of jumping rope. This consistently gets accurate counts
+within 1 or 2 counts which seem to be from artifacts at the beginning or
+end. Sometimes, however, the count is very inaccurate. This is
+notably true whenever I am not conscious of the orientation I hold the
+rope in at the start. Looking at the X axis data as well, or some
+combination of the two, could prove useful in making the algorithm more
+robust to this kind of noise. Overall I&rsquo;m happy with how it performs, though:</p>
+<p><img src="../../img/week11/peak_chart.jpg" alt="peak_chart"></p>
+<p>There are 24 unique peaks here (with a peak occurring when the signal line
+transitions from a non-1 value to 1) and this is reasonably close to the
+22 jumps I did in this recording, especially when accounting for the
+boundary effects induced by waiting for $k$ points before counting.</p>
+<p>Going forward, I plan to experiment with different functions of the X and
+Z axis signals. When I eventually attempt to count cross overs and double
+unders, the Y-axis data could prove very relevant as well.</p>
+<p>As an example, here&rsquo;s a video of very noisy data coming from a more
+complicated jump routine that I hope to be able to account for on the future:</p>
+<p><video controls src="../../img/week11/complicated_jump.mp4" style="width:800px"></video></p>
+<h2 id="bill-of-materials-a-hrefbillofmaterials-">Bill of Materials <a href="billofmaterials" /></h2>
+<p>The project materials are very straightforward:</p>
+<p><img src="../../img/week11/materials.jpg" alt="bom"></p>
+<ul>
+<li>2 CR123 Batteries</li>
+<li>1 MPU6050 Acclerometer Board</li>
+<li>1 Huzzah Feather ESP32 Board</li>
+<li>1 Microusb cable</li>
+<li>1 608zz Bearing</li>
+<li>Connecting wire</li>
+<li>Soldering Iron</li>
+<li>Electrical Tape</li>
+<li>3D Printed Handle and Cap</li>
+</ul>
+<p>Beyond these physical components, a computer with reliable internet
+connection is needed to upload and run the code in the section below.</p>
+<h2 id="source-code-a-hrefsourcecode-">Source Code <a href="sourcecode" /></h2>
+<p>While snippets can be found above, the full source code and STL files for
+this project are available here:</p>
+<ul>
+<li>React native app: <a href="../../img/week11/react.zip">react.zip</a></li>
+<li>Arduino app: <a href="../../img/week11/ble.ino">ble.ino</a></li>
+<li>3D Printed Components: <a href="../../img/week11/handle_main.stl">handle</a> and <a href="../../img/week11/handle_cap.stl">handle cap</a></li>
+</ul>
+
+      </article>
+
+      
+
+      
+
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+

@@ -10,11 +10,13 @@
     
     <item>
       <title>Final Project</title>
-      <link>http://seansullivan.ai/physci-70/post/week11/</link>
+      <link>http://seansullivan.ai/physci-70/post/final/</link>
       <pubDate>Sat, 18 Apr 2020 15:56:31 -0500</pubDate>
       
-      <guid>http://seansullivan.ai/physci-70/post/week11/</guid>
-      <description>Workout Tracking Expanding on the force sensor I built last week, for my final project, I will be building a smart jump rope. While this is a produce that does exist, I am not satisfied with what is out there. Many of these products are simple mechanical counters and others are much more complicated, flashing a strip of LEDs in the air as you swing so you can see your repetitions.</description>
+      <guid>http://seansullivan.ai/physci-70/post/final/</guid>
+      <description>Table of Contents
+ TL;DR Motivation Process Outline Housing Design (Week 10) Proof Of Concept (Week 11) Component Prep Assembly Data Transmission React Native App Jump Detection Comprehensive Bill of Materials Source Code  TL;DR  Over the past few weeks I&amp;rsquo;ve built a smart jump rope:
+As a preview of the final product, I put together this short demo video of the working final product, the jump rope together with a mobile app:</description>
     </item>
     
     <item>
