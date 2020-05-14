@@ -31,7 +31,7 @@ Over the past few weeks I've built a smart jump rope:
 As a preview of the final product, I put together this short demo video of
 the working final product, the jump rope together with a mobile app:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mDQJdr12sCg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yBGto2mGRR8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Motivation <a name="motivation"></a>
 
