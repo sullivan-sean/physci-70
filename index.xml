@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PHYSCI 70: Digital Fabrication</title>
+    <link>http://seansullivan.ai/physci-70/</link>
+    <description>Recent content on PHYSCI 70: Digital Fabrication</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2020 15:56:31 -0500</lastBuildDate><atom:link href="http://seansullivan.ai/physci-70/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Final Project</title>
+      <link>http://seansullivan.ai/physci-70/post/final/</link>
+      <pubDate>Sat, 18 Apr 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/final/</guid>
+      <description>Table of Contents
+ TL;DR Motivation Process Outline Housing Design (Week 10) Proof Of Concept (Week 11) Component Prep Assembly Data Transmission React Native App Jump Detection Comprehensive Bill of Materials Source Code  TL;DR  Over the past few weeks I&amp;rsquo;ve built a smart jump rope:
+As a preview of the final product, I put together this short demo video of the working final product, the jump rope together with a mobile app:</description>
+    </item>
+    
+    <item>
+      <title>Week 10</title>
+      <link>http://seansullivan.ai/physci-70/post/week10/</link>
+      <pubDate>Mon, 13 Apr 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week10/</guid>
+      <description>Workout Tracking With plenty of time during quarantine to establish a consistent workout, I decided to build a workout tracker this week. Okay, workout tracker might be a bit of an overstatement. I built a simple force sensitive sensor that connects to a web app I&amp;rsquo;m running on my computer to log various forces over time. I used this to record me jump roping (one of my favorite workouts) as I typically do not have an easy way to objectively measure reps or intensity day over day.</description>
+    </item>
+    
+    <item>
+      <title>Week 9</title>
+      <link>http://seansullivan.ai/physci-70/post/week9/</link>
+      <pubDate>Mon, 06 Apr 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week9/</guid>
+      <description>Networking My main project for the week was to use the radio modules to make a controller for a remote controlled car. To make this, I planned to use the motors from my NXT kit which I started to explore last week. The motors were much easier to understand than the complicated I2C protocol for the ultrasonic sensor. The motors have encoder pins to determine the motors speed and position and 2 pins to power the sensors for this.</description>
+    </item>
+    
+    <item>
+      <title>Week 8</title>
+      <link>http://seansullivan.ai/physci-70/post/week8/</link>
+      <pubDate>Mon, 30 Mar 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week8/</guid>
+      <description>Working From Home Over the past week, quarantining at home, I had a chance to sift through some old electronics kits that I never had the chance to explore. I found a soldering iron, an (unopened) book on op amps, and an arduino kit that included various components, among them some input and output devices.
+One of the output devices that stuck out to me was the LCD screen, so this is where I started my exploration of output devices for the week.</description>
+    </item>
+    
+    <item>
+      <title>Week 6</title>
+      <link>http://seansullivan.ai/physci-70/post/week6/</link>
+      <pubDate>Mon, 09 Mar 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week6/</guid>
+      <description>Electromyography (EMG) This week for sensors I wanted to build an electromyogram (EMG) to sense muscle activation. Inspired by CTRL-labs BCI that does high precision muscle sensing to preemptively determine how your hand will move, I thought an EMG would be a good start in learning how this worked. Muscles are activated through neuronal signaling, which is electrical. By attaching electrodes to two points of a muscle and amplifying the signal, you fill find a differential in electrical potential that changes with muscle contraction.</description>
+    </item>
+    
+    <item>
+      <title>Week 5</title>
+      <link>http://seansullivan.ai/physci-70/post/week5/</link>
+      <pubDate>Fri, 28 Feb 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week5/</guid>
+      <description>Preliminary Research Before diving in this week, I watched many Youtube videos and found many sites for 3D Printing Inspiration that I&amp;rsquo;d like to share and be able to come back to myself.
+Resources Several of the resources I&amp;rsquo;ve explored this week are
+ r/3Dprinting for functional and creative 3d print inspiration  They have a great guide on modeling   Hinges that print in place RepRap self-replicating printers  Other Cool things One cool thing about 3D Printers that I found are print in-place mechanisms.</description>
+    </item>
+    
+    <item>
+      <title>Week 4</title>
+      <link>http://seansullivan.ai/physci-70/post/week4/</link>
+      <pubDate>Thu, 20 Feb 2020 15:56:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week4/</guid>
+      <description>Getting Arduino Setup At first, my Arduino board wouldn&amp;rsquo;t work, even after installing packages with Board Manager for Adafruit SAMD. While code would compile fine in the IDE, whenever I tried to upload to the board I got the error &amp;ldquo;Permission Denied.&amp;rdquo; In order to solve this problem, I investigated the permissions on the port I had plugged the device into. By running
+ls -l /dev/ttyACM0 I found that the group permissions for the port was set to the group uucp.</description>
+    </item>
+    
+    <item>
+      <title>Week 3</title>
+      <link>http://seansullivan.ai/physci-70/post/week3/</link>
+      <pubDate>Mon, 17 Feb 2020 22:39:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week3/</guid>
+      <description>This week I built a drawing machine. I was initially inspired by spirographs that I used to have as a kid and wanted to make an automated, mechanical form of these. After exploring Pinterest spirographs to see if there were particularly interesting patterns I could create, I found this drawing machine that costs $675!! The pattern combinations were very complex and customizable so I set out to make something similar at a much lower price point.</description>
+    </item>
+    
+    <item>
+      <title>Week 2</title>
+      <link>http://seansullivan.ai/physci-70/post/week2/</link>
+      <pubDate>Tue, 11 Feb 2020 22:39:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week2/</guid>
+      <description>My second week was hectic &amp;ndash; not only was I traveling for the weekend, my phone broke Thursday night, making documentation very difficult. This week were assigned to make a press fit construction kit. I had several ideas of things I wanted to make including:
+ An Eiffel Tower A plant/flower of some sort Something Valentine&amp;rsquo;s day related A flexible self-intersecting single-piece kit Animal bookshelf (inspired by this) Bitmap art for my wall Bookends for my bookshelf A geodesic dome  My strongest interest was in the geodesic domes.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>http://seansullivan.ai/physci-70/contact/</link>
+      <pubDate>Tue, 04 Feb 2020 00:35:54 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/contact/</guid>
+      <description>   </description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://seansullivan.ai/physci-70/about/</link>
+      <pubDate>Tue, 04 Feb 2020 00:03:29 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/about/</guid>
+      <description>Hi! I&amp;rsquo;m Sean, currently a junior at Harvard pursuing a joint B.A. in Neuroscience and M.S. in Applied Mathematics. I like building things with other people. I&amp;rsquo;ve taken two semesters off from school, the first to co-found Summer Playbook and the second to live in a van while building autonomous robots at Nuro. I love talking about brain computer interfaces and the importance of sleep. This semester I&amp;rsquo;m reaching far out of my comfort zone to dance with Expressions</description>
+    </item>
+    
+    <item>
+      <title>Week 1</title>
+      <link>http://seansullivan.ai/physci-70/post/week1/</link>
+      <pubDate>Mon, 03 Feb 2020 22:39:31 -0500</pubDate>
+      
+      <guid>http://seansullivan.ai/physci-70/post/week1/</guid>
+      <description>For the first week of class, we experimented with microcontrollers, building our first circuits on breadboards. Loosely following a guide introducing basic electronics, I built a circuit using the Adafruit ItsyBitsy M4 controller. The circuit I set out to build can be represented in the following diagram:
+For power source (5V) and ground (GND), I used the 3V and GND terminals of the microcontroller respectively. After fun stripping and cutting wires, I assembled the circuit as below:</description>
+    </item>
+    
+  </channel>
+</rss>
