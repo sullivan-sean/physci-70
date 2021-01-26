@@ -25,4 +25,4 @@ relativeURLs = true
 
 [params]
   mainSections = ["post"]
-  paginate = 5
+  paginate = 15
