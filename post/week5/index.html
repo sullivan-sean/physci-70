@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 5 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week5/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 5 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week5/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Week 5</h1>
+        <span class="post-meta">Feb 28, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <h2 id="preliminary-research">Preliminary Research</h2>
+<p>Before diving in this week, I watched many Youtube videos and found many
+sites for 3D Printing Inspiration that I&rsquo;d like to share and be able to
+come back to myself.</p>
+<h3 id="resources">Resources</h3>
+<p>Several of the resources I&rsquo;ve explored this week are</p>
+<ul>
+<li><a href="https://www.reddit.com/r/3Dprinting/">r/3Dprinting</a> for functional and creative 3d print inspiration
+<ul>
+<li>They have a great
+<a href="https://www.reddit.com/r/3DPrinting/wiki/makingmodels">guide</a> on modeling</li>
+</ul>
+</li>
+<li><a href="https://www.youtube.com/watch?v=7JhjhgjchfM">Hinges</a> that print in place</li>
+<li><a href="https://reprap.org/wiki/RepRap">RepRap</a> self-replicating printers</li>
+</ul>
+<h3 id="other-cool-things">Other Cool things</h3>
+<p>One cool thing about 3D Printers that I found are <em>print in-place</em>
+mechanisms. In a single print, you are able to produce joints, gears, and
+<a href="https://ult3d.com/3d-printing-assemblies-no-assembly-required/">other
+mechanisms</a>.
+Compared to the other fabrication methods I&rsquo;ve seen this seems unique to
+3d printing.</p>
+<p>This
+<a href="https://www.slashgear.com/3d-printed-robot-requires-no-assembly-also-has-liquid-parts-07435201/">robot</a>
+is one example of a print that requires no assembly but functions fully
+with the addition of a single battery and motor.</p>
+<p>Some things I think would be cool to build with a 3d printer in the future
+is a 3d printer (see <a href="https://reprap.org/wiki/RepRap">RepRap</a> above), as
+well as a custom build laptop. There are concerns about cooling for this
+so I&rsquo;m not sure what the best material to use for this would be. An
+alternative that I might pursue before a full laptop is a raspberry pi
+setup as my next computer, with a small LCD screen and foldable keyboard.
+The <a href="https://www.raspberrypi.org/products/raspberry-pi-4-model-b/">Raspberry Pi
+4</a> now comes
+with an option for 4GB of RAM which I think could serve my everyday
+computing needs. For this project I would print a case to hold the screen
+to the board, slots to cover ports, and a compartment below the board for
+the foldable keyboard.</p>
+<h2 id="prints">Prints</h2>
+<p>My first attempt at a print this week was a bottle opener. I planned to
+make a virus shaped bottle opener for Corona bottles. After constructing
+an initial iteration, Prusa estimated a print time of 8 hours!! I shrunk
+the model and it still took several hours so I started by making the
+opener component to see if the opener would actually work.</p>
+<h3 id="bottle-opener">Bottle Opener</h3>
+<p>I first took a picture of a bottle opener I had and used it as a canvas in
+fusion:</p>
+<p><img src="../../img/week5/opener.png" alt="opener"></p>
+<p>After extruding this, I exported the component as an STL and imported it
+to Prusa slider. I set it on its top and tried printing without support
+(no large overhangs) and with 50% infill so that it was sturdy against the
+metal bottle cap.</p>
+<p><img src="../../img/week5/opener_upright.png" alt="opener_upright"></p>
+<p>This opener had filaments that broke easily when subject to the lever
+force used to open the bottle and fractured after printing. Luckily
+printing in another orientation had similar time and required no supports:</p>
+<p><img src="../../img/week5/opener_side.png" alt="opener_side"></p>
+<p>Unfortunately, even with this change, the opener wasn&rsquo;t sturdy enough to
+open the bottles. Instead of continuing to pursue this, I decided to scrap
+the opener part and just print a Corona Virus.</p>
+<h3 id="virus">Virus</h3>
+<p>I wanted to make a bacteriophage like virus that is easily identifiable
+(even though Coronavirus is not a bacteriophage). These viruses have an
+icosahedral head and several spiky legs coming out of their base.</p>
+<p>I made a pentagonal pyramid with Fusion&rsquo;s loft feature.</p>
+<p><img src="../../img/week5/pentagon.png" alt="pentagon"></p>
+<p>Then joined two rotated pyramids with a cylinder and used Fusions slice
+feature to cut off excess.</p>
+<p><img src="../../img/week5/ico_slice.png" alt="ico_slice"></p>
+<p>The result was what I was looking for:</p>
+<p><img src="../../img/week5/ico.png" alt="ico"></p>
+<p>To construct the bottom I made a cylinder and added a leg body, then used
+the circular pattern feature to duplicate it several times:
+<img src="../../img/week5/bottom.png" alt="bottom"></p>
+<p>I joined these two designs using design linking in fusion. I added
+a cylinder to connect them and added an extruded SVG of the Corona logo to
+cut the logo into the cylinder:</p>
+<p><img src="../../img/week5/virus_fusion.png" alt="virus_fusion"></p>
+<p>I tried two orientations in Prusa for printing this as  any orientation
+required support:</p>
+<p><img src="../../img/week5/virus_side.png" alt="virus_side">
+<img src="../../img/week5/virus_upright.png" alt="virus_upright"></p>
+<p>I ended up choosing the upright orientation to avoid any scarring on the
+identifiable icosahedral head. I used 0% infill to speed up printing.</p>
+<p>After printing I ended up with lots of support:</p>
+<p><img src="../../img/week5/virus_scaffold.jpg" alt="virus support"></p>
+<p>And after cutting off the support there was some scarring on the base but
+I&rsquo;m overall happy with the result. The logo is still legible!!</p>
+<p><img src="../../img/week5/virus.jpg" alt="virus"></p>
+<h3 id="picture-frame">Picture Frame</h3>
+<p>Another project I wanted to make was a frame for the painting my
+girlfriend made for me for Valentine&rsquo;s day. A basic frame that fit the
+picture was too large for Prusa&rsquo;s bed:</p>
+<p><img src="../../img/week5/large_frame.png" alt="large_frame"></p>
+<p>Instead, I split the frame in two interlocking pieces:</p>
+<p><img src="../../img/week5/frame_fusion.png" alt="frame_fusion"></p>
+<p>This allowed me to print twice as fast on two printers as well!</p>
+<p><img src="../../img/week5/frame_partial.jpg" alt="frame"></p>
+<p>The interlocking joints came out well but the slot I left between for the
+paper was filled with support so the frame was ultimately not usable.</p>
+<h3 id="ball-bearing">Ball Bearing</h3>
+<p>Finally, I wanted to expriment with print in place and so I made a ball bearing.</p>
+<p>Finally, I wanted to expriment with print in place and so I made a ball
+bearing.</p>
+<p>Finally, I wanted to expriment with print in place and so I made a ball
+bearing.
+<img src="../../img/week5/bearing_sketch.png" alt="bearing_sketch">
+<img src="../../img/week5/ball_bearing.png" alt="ball_bearing">
+<img src="../../img/week5/bearing_split.png" alt="bearing_split">
+<img src="../../img/week5/ball_bearing.jpg" alt="ball_bearing"></p>
+
+      </article>
+
+      
+
+      
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+

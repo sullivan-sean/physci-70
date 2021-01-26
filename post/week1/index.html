@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 1 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week1/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 1 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week1/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Week 1</h1>
+        <span class="post-meta">Feb 3, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <p>For the first week of class, we experimented with microcontrollers, building our
+first circuits on breadboards. Loosely following a
+<a href="https://roberthart56.github.io/SCFAB/SC_lab/Electronics/electronic_basics.html">guide</a>
+introducing basic electronics, I built a circuit using the <a href="https://www.adafruit.com/product/3800">Adafruit ItsyBitsy
+M4</a> controller. The circuit I set out to
+build can be represented in the following diagram:</p>
+<p><img src="../../img/week1/diagram.jpg" alt="Circuit Diagram"></p>
+<p>For power source (5V) and ground (GND), I used the 3V and GND terminals of the
+microcontroller respectively. After fun stripping and cutting wires, I assembled
+the circuit as below:</p>
+<p><img src="../../img/week1/basic_LED.jpg" alt="Basic LED"></p>
+<p>My circuit did not work on the first try as I had reversed the direction of the
+LED. By switching the location of the two legs, I was able to get the LED to
+light up.</p>
+<p>After assembling the initial circuit, I wanted to learn more about the
+underlying connections within the breadboard. I looked at the conducting and
+insulating materials on the underside of example breadboards that had been
+deconstructed. It looked something like this:</p>
+<p><img src="../../img/week1/breadboard.jpg" alt="Breadboard Back"></p>
+<p>I then attempted to make a circuit that eliminated all of the wire pieces I had
+used initially, with the result here:</p>
+<p><img src="../../img/week1/short_LED.jpg" alt="Short LED"></p>
+<p>On this circuit I used a multimeter to measure voltage differences across the
+resistor and LED. There was a 0.667V reading across the resistor and
+a 2.333V reading across the LED. This means first that the voltage is
+monotonically decreasing throughout the circuit and second that all 3V
+that we started with were &ldquo;used.&rdquo; The bands across the resistor indicate
+that it is a 1k Ohm resistor:</p>
+<p><img src="../../img/resistorcodes.png" alt="Resistor codes"></p>
+<p>Using Ohm&rsquo;s law, we then know that the current through the resistor is:
+$$I=\frac{V}{R}=\frac{0.667V}{1000 \Omega}=0.667 mA$$
+Current is constant through a series circuit so this is also the current
+through the LED.</p>
+<p>Lastly, I used the Arduino IDE to get the built-in LED on the microcontroller to
+blink.</p>
+<p><img src="../../img/week1/blink.gif" alt="Blink"></p>
+<p>This did not work immediately either. I plugged the MicroUSB adapter from
+the microcontroller into a USB port on my computer, but the Arduino IDE was
+unable to access this port unless I ran the program as a root user. After
+reinstalling the Adafruit board for the root user, I was able to detect the
+board and run the blink example program.</p>
+<h2 id="project-ideas">Project Ideas</h2>
+<p>I&rsquo;ve been and will continue to brainstorm project ideas but I&rsquo;m sure these will
+change as I better understand what is feasible and what is not.</p>
+<ul>
+<li>
+<p><strong>Biotracking ring</strong>: Since getting a smartwatch, I&rsquo;ve been able to track my
+heart rate and sleep. I&rsquo;ve been frustrated with the need to manually enter
+activities (when am I walking, running, etc.), the inability to track my
+precise location, and inability to automatically connect to wifi and back up
+data (the interface provided on my phone is far from ideal). I would like to
+create a more compact and stylish device that provides these functions.</p>
+</li>
+<li>
+<p><strong>Autonomous Skateboard</strong>: I recently built a longboard and think a second
+iteration of skateboard construction would lead to a better final product. I&rsquo;d
+like to modify the board to be electrically powered, and possibly to have some
+steering capabilities. While full autonomy might not be possible (e.g.
+intersections would be <em>very</em> difficult) steering around objects in a
+classroom could be an interesting challenge.</p>
+</li>
+<li>
+<p><strong>Micro Keyboard</strong>: I&rsquo;ve seen collapsible keyboards but they often fold up
+when not on a flat surface. I&rsquo;d like to use my phone as my computer (ssh).</p>
+</li>
+<li>
+<p><strong>Pose Tracking Clothes Inserts</strong>: Similar to bio tracking, I&rsquo;d like to have
+inserts for my socks and shirt sleeves to track how my body is moving
+throughout the day. They&rsquo;d need to be removable so that I can wash my clothes!</p>
+</li>
+<li>
+<p><strong>Solar powered X</strong>:  ???</p>
+</li>
+</ul>
+
+      </article>
+
+      
+
+      
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+

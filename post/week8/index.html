@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 8 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week8/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+<div class="site-wrap">
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Week 8 - PHYSCI 70: Digital Fabrication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="http://seansullivan.ai/physci-70/post/week8/">
+
+  
+  
+
+  
+  
+
+  
+  
+
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/combined-min.css">
+  <link rel="stylesheet" type="text/css" href="http://seansullivan.ai/physci-70/css/custom.css">
+  
+
+</head>
+<body class="">
+  <div class="page-container">
+
+  <div class="post p2 p-responsive wrap" role="main">
+    <div class="measure">
+      <div class="post-header mb2">
+        <h1>Week 8</h1>
+        <span class="post-meta">Mar 30, 2020</span><br>
+        
+      </div>
+
+      <article class="post-content">
+      <h2 id="working-from-home">Working From Home</h2>
+<p>Over the past week, quarantining at home, I had a chance to sift through
+some old electronics kits that I never had the chance to explore. I found
+a soldering iron, an (unopened) book on op amps, and an arduino kit that
+included various components, among them some input and output devices.</p>
+<p>One of the output devices that stuck out to me was the LCD screen, so this
+is where I started my exploration of output devices for the week.</p>
+<h3 id="lcd">LCD</h3>
+<p>I first set out to use the LCD screen, a novel output device for me. The
+LCD board I had found was
+a LMB162ABC board and so I first found the
+<a href="http://www.mantech.co.za/datasheets/products/LMB162ABC.pdf">datasheet</a>.
+Most of the pins seemed necessary and so I soldered header pins onto all
+of the terminals of the board:</p>
+<p><img src="../../img/week8/soldered_lcd.jpg" alt="soldered_lcd"></p>
+<p>Next I found a tutorial on a <a href="https://www.arduino.cc/en/Tutorial/HelloWorld">simple hello world
+program</a> with the LCD on
+the official Arduino site.</p>
+<p>The circuit diagram did not provide explicit steps for setup and after
+I plugged everything in and tried to run the code. Instead of seeing
+hello, world, I saw a row of dark boxes and then a blinking cursor
+positioned after the missing hello world text. This was strange as it
+didn&rsquo;t seem to be an issue with contrast (the cursor showed up), which is
+a problem many people faced on the forums I found. Low contrast can occur
+with to large a potentiometer, which controls the contrast when adjusted.</p>
+<p><a href="https://forum.arduino.cc/index.php?topic=207543.msg1526113#msg1526113">This</a>
+hidden post on the Arduino forums ultimately solved my problems. By giving
+a comprehensible breakdown of everything going on in the circuit, I was
+able to make sure each of the hardware components was setup correctly
+before moving on to the code. The pins, from the data sheet, are as follows:</p>
+<p>(1) GND</p>
+<p>(2) +5V</p>
+<p>(3) LCD Contrast V0</p>
+<p>(4) Register Select (LOW/HIGH for for instruction vs display)</p>
+<p>(5) Read/Write (LOW for write)</p>
+<p>(6) Data enable pin</p>
+<p>(7-14) Up to 8-bit data bus</p>
+<p>(15) Backlight +V</p>
+<p>(16) Backlight -V</p>
+<p>In the end, my error was connecting pin 5 to my 5V rail instead of GND,
+putting the LCD board in read mode instead of write mode. The process
+I used to isolate this was the following steps:</p>
+<ol>
+<li>start by hooking up backlight pins 15 and 16 to 5V and GND respectively
+(a resistor can be used between 15 and 5V to control backlight intensity)</li>
+<li>Connect pins 1 and 2 to GND and 5V respectively and 3 to a 10k
+potentiometer between GND and 5V.</li>
+<li>Connect the data pins (I used 4 bit mode, so pins 11-14), register
+select pin 4 and data enable pin 6 directly to your microcontrollor.</li>
+<li>Connect pin 5, the read/write control to GND if you plan on writing and
+5V if you plan on reading.</li>
+</ol>
+<p>After step 1. you should see the display backlight turn on with uniform
+color and brightness. By adjusting the potentiometer in part 2, you should
+see a row of 16x2 empty boxes indicating the display positions of the LCD
+screen. The potentiometer will adjust the contrast of these boxes.
+Steps 3 and 4, if performed correctly, will then allow you to write hello,
+world to the lcd as in the code example on the arduino site. The final
+product looked like this:</p>
+<p><img src="../../img/week8/lcd_circuit.jpg" alt="lcd_circuit"></p>
+<h3 id="nxt-ultrasonic-sensor">NXT Ultrasonic Sensor</h3>
+<p>After digging up my old LEGO kit, I looked up videos of people
+disassembling various sensors and motors to determine how best to attach
+these sensors with my Arduino. The parts typically connect to the NXT body
+through RJ12 wire. I had some at home and took a peek inside. The cables
+had two identical connections at either end before I cut into them:</p>
+<p><img src="../../img/week8/RJ12_wire.jpg" alt="RJ12_wire"></p>
+<p>I am particularly interested in the ultrasonic distance sensor in case
+I end up trying to build some sort of autonomous vehicle for my final
+project.  The circuit board within the ultrasonic sensor looked like this
+(<a href="http://botbench.com/blog/2011/09/21/exposed-lego-ultrasonic-sensor/">source</a>):</p>
+<p><img src="../../img/week8/nxt_ultrasonic.jpg" alt="nxt_ultrasonic_circuit"></p>
+<p>Notice the 6 soldered pins on the left of this image. These are soldered
+to the female RJ12 port on the sensor. So I could either desolder the RJ12 female port and solder new wires
+directly to the PCB or cut open one of the cables and solder wires to
+this. I elected for the second option as I don&rsquo;t yet have desoldering
+equipment at home and wanted to keep the sensor in tact for future LEGO
+usage. For a more permanent solution in a later project that would
+destroy the sensor, I might affix wires directly to the board. After cutting and soldering the RJ12 wire at one end I had the following:</p>
+<p><img src="../../img/week8/soldered_cable.jpg" alt="soldered_cable"></p>
+<p>The next step was to understand which wire was responsible for what. After
+some digging I found that LEGO is very open with their products and
+provided linked specifications on their
+<a href="https://www.lego.com/en-us/themes/mindstorms/downloads">website</a>, at the
+bottom of the page in the developer kits section.</p>
+<p>I had an older NXT (not the EV3) and unfortunately the link for this
+developer kit was broken. After some searching, I found <a href="https://web.archive.org/web/20150202233603/http://www.thecompblog.com/2012/08/hacking-lego-nxt-part-3.html">this archived
+blog</a>
+in which somebody configured all NXT sensors to work with an arduino
+board. This source provided many other helpful links for me.</p>
+<p>The most helpful of these was a <a href="http://blog.tkjelectronics.dk/2011/10/nxt-shield-ver2/">blog
+post</a> which
+describes the authors process in creating a shield to interface between an
+Arduino and the NXT sensors. This site had backups of the <a href="http://blog.tkjelectronics.dk/wp-content/uploads/2011/10/LEGO-MINDSTORMS-NXT-Hardware-Developer-Kit.pdf">NXT hardware dev kit</a>
+and <a href="http://blog.tkjelectronics.dk/wp-content/uploads/2011/10/Appendix-7-LEGO-MINDSTORMS-NXT-Ultrasonic-Sensor-I2C-communication-protocol.pdf">ultrasonic appendix</a>.
+From the diagrams in the appendix I learned the wires for the ultrasonic
+sensor were as follows:</p>
+<ol>
+<li>White - +9V</li>
+<li>Black - GND</li>
+<li>Red - GND</li>
+<li>Green - +5V</li>
+<li>Yellow - I2C Clock</li>
+<li>Blue - I2C Data</li>
+</ol>
+<p>Fortunately the Arduino Uno and Adafruit Metro boards have SDA and SCL
+pins along with a built-in library for I2C communication, SDA
+corresponding to the data pin and SCL to the clock pin.
+The circuit diagram I ended up using was as follows:</p>
+<p><img src="../../img/week8/circuit_diagram_ultrasonic.jpg" alt="circuit_diagram_ultrasonic">
+where the black header pin bar from left to right indicates connections 1-6 on the RJ12 wire from the sensor.</p>
+<p>After setting up the circuit I needed to get the I2C connection working correctly.
+The I2C library I used can be found <a href="http://blog.tkjelectronics.dk/wp-content/uploads/2011/10/i2cmaster.zip">here</a>
+and is backed up in a <a href="https://github.com/chrisramsay/i2cmaster">github repo</a>.
+The comments in the <code>i2cmaster.h</code> header file were helpful in
+understanding some of the important functions for reading and writing with
+the i2c interface.</p>
+<p>The general process for issuing a command to the sensor involves:</p>
+<ol>
+<li>Starting a write with the <code>i2c_start</code> function</li>
+<li>Issuing a specific byte instruction with <code>i2c_write</code></li>
+<li>Close the connection with <code>i2c_stop</code></li>
+</ol>
+<p>We then wait for the to receive the command and process and then do the
+following to read back the gathered data:</p>
+<ol>
+<li>Starting the read process with <code>i2c_rep_start</code></li>
+<li>Read byte by byte sensor data with <code>i2c_readAck</code></li>
+<li>Close the connection with <code>i2c_stop</code></li>
+</ol>
+<p>Overall issuing a byte command to the sensor looks like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">byte buf[<span style="color:#ae81ff">9</span>]; <span style="color:#75715e">// Buffer to store the received valeus
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">ultrasonicCommand</span>(byte cmd) {
+  delay(<span style="color:#ae81ff">100</span>); <span style="color:#75715e">// There has to be a delay between commands
+</span><span style="color:#75715e"></span>
+  pinMode(clockPin, INPUT); <span style="color:#75715e">// Needed for writing to work
+</span><span style="color:#75715e"></span>  digitalWrite(clockPin, HIGH);
+ 
+  <span style="color:#66d9ef">if</span>(i2c_start(addr<span style="color:#f92672">+</span>I2C_WRITE)) {
+    Serial.println(<span style="color:#e6db74">&#34;ERROR i2c_start&#34;</span>);
+    i2c_stop();
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+  }
+  <span style="color:#66d9ef">if</span> (i2c_write(cmd)) {
+    Serial.println(<span style="color:#e6db74">&#34;ERROR i2c_write&#34;</span>);
+    i2c_stop();
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+  }
+  i2c_stop();
+   
+  delayMicroseconds(<span style="color:#ae81ff">60</span>); <span style="color:#75715e">// Needed for receiving to work
+</span><span style="color:#75715e"></span>  pinMode(clockPin, OUTPUT);
+  digitalWrite(clockPin, LOW);
+  delayMicroseconds(<span style="color:#ae81ff">34</span>);
+  pinMode(clockPin, INPUT);
+  digitalWrite(clockPin, HIGH);
+  delayMicroseconds(<span style="color:#ae81ff">60</span>);  
+
+  <span style="color:#66d9ef">if</span>(i2c_rep_start(addr <span style="color:#f92672">+</span> I2C_READ)) {
+    Serial.println(<span style="color:#e6db74">&#34;ERROR i2c_rep_start&#34;</span>);
+    i2c_stop();
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+  }
+  
+  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; i<span style="color:#f92672">++</span>) {
+    buf[i] <span style="color:#f92672">=</span> i2c_readAck();
+  }
+  buf[<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> i2c_readNak();
+  i2c_stop();
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>This function stores the results of the sensor reading in global variable
+<code>buf</code>. Valid commands for this sensor can be found in the
+<a href="http://blog.tkjelectronics.dk/wp-content/uploads/2011/10/Appendix-7-LEGO-MINDSTORMS-NXT-Ultrasonic-Sensor-I2C-communication-protocol.pdf">appendix</a>
+provided by LEGO mentioned above.</p>
+<p>By issuing various byte commands I was able to get information about the
+sensor:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Byte</th>
+<th>Meaning</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0x00</td>
+<td>Version</td>
+<td>V1.0</td>
+</tr>
+<tr>
+<td style="text-align:left">0x08</td>
+<td>Product ID</td>
+<td>LEGO</td>
+</tr>
+<tr>
+<td style="text-align:left">0x10</td>
+<td>Sensor Type</td>
+<td>Sonar</td>
+</tr>
+<tr>
+<td style="text-align:left">0x14</td>
+<td>Sensor Units</td>
+<td>10E-2m</td>
+</tr>
+</tbody>
+</table>
+<p>And also got the sensor to read values in cm (the units given in the
+table).</p>
+<h3 id="integration">Integration</h3>
+<p>With both input from the ultrasonic sensor and the LCD output all setup,
+the next step I took was to integrate them. I replaced the
+<code>Serial.println</code> calls in my ultrasonic code with <code>lcd.print</code> and imported
+the appropriate header file. I kept the hello world and printed the
+distance on the second line. I can imagine the LCD serving as a nice
+debugger in some cases:</p>
+<p><video controls src="../../img/week8/final.mp4"></video></p>
+<p>As can be seen in the (low quality) video, the ultrasonic sensor is
+relatively accurate to the true object distance and it correctly displays
+this distance on the LCD screen. For fun I added a servo motor at the end,
+connecting the ground and 5V wires to my circuit accordingly and putting
+the control wire in pin 9 on the Arduino. This could be used to translate
+linear motion into rotational motion:</p>
+<p><img src="../../img/week8/with_servo.jpg" alt="with_servo"></p>
+<p>The final code for this circuit is available <a href="../../img/week8/ultrasonic_lcd.ino">here</a></p>
+
+      </article>
+
+      
+
+      
+    </div>
+  </div>
+</div>
+    <footer class="footer">
+      <div class="wrap">
+        <div class="measure mt1 center">
+          <small>
+            Made by Sean Sullivan, copyright &#169; 2020. Powered by <a href="http://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/azmelanar/hugo-theme-pixyll" target="_blank">Pixyll</a>
+          </small>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+      });
+      MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+
+      MathJax.Hub.Config({
+      
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+</div>
+</body>
+</html>
+
